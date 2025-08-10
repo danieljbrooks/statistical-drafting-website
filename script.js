@@ -15,7 +15,7 @@ class DraftingAssistant {
         this.originalFilters = null;
         
         // Available sets that have Premier Draft models
-        this.availableSetModels = ['FIN', 'OTJ', 'PIO', 'SIR', 'MOM', 'BRO', 'WOE', 'LTR', 'LCI', 'MKM', 'MH3', 'KTK', 'DMU', 'SNC', 'NEO', 'ONE', 'BLB', 'DFT', 'DSK', 'FDN', 'TDM'];
+        this.availableSetModels = ['FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU', 'VOW', 'STX', 'MID', 'AFR', 'KHM'];
         console.log('Constructor complete, availableSetModels:', this.availableSetModels);
         
         // Don't initialize here - wait for DOM ready
@@ -208,8 +208,8 @@ class DraftingAssistant {
         // Order sets chronologically from newest to oldest (as provided by user)
         const setOrder = [
             'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 
-            'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'ONE', 'BRO', 'DMU', 'HBG', 
-            'SNC', 'NEO', 'VOW', 'MID', 'AFR', 'STX', 'KHM'
+            'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 
+            'DMU', 'VOW', 'STX', 'MID', 'AFR', 'KHM'
         ];
         
         // Filter to only include sets that have Premier Draft models available
@@ -275,7 +275,7 @@ class DraftingAssistant {
 
     async loadCardData(setName) {
         try {
-            const response = await fetch(`statistical-drafting/data/cards/${setName}.csv`);
+            const response = await fetch(`data/cards/${setName}.csv`);
             const csvText = await response.text();
             this.cardData = this.parseCSV(csvText);
             this.cardnames = this.cardData.map(card => card.name);
@@ -287,7 +287,7 @@ class DraftingAssistant {
 
     async loadModel(setName) {
         try {
-            const modelPath = `statistical-drafting/data/onnx/${setName}_Premier.onnx`;
+            const modelPath = `data/onnx/${setName}_Premier.onnx`;
             console.log(`Loading model from: ${modelPath}`);
             
             // Add timeout to prevent hanging

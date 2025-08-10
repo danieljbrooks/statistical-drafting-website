@@ -12,21 +12,26 @@ A static website for the Statistical Drafting Assistant that shows recommended c
 
 ## Quick Start
 
-1. **Clone the repository** (if you haven't already):
+### Option 1: GitHub Pages (Recommended)
+The website is hosted at: [statisticaldrafting.com](https://statisticaldrafting.com)
+
+### Option 2: Local Development
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/danieljbrooks/statistical-drafting-website.git
    cd statistical-drafting-website
    ```
 
-2. **Start the server**:
+2. **Open index.html** directly in your browser, or use a local server:
    ```bash
-   python3 server.py
+   # Using Python 3
+   python3 -m http.server 8000
+   
+   # Using Node.js
+   npx serve .
    ```
 
-3. **Open your browser** and navigate to:
-   ```
-   http://localhost:8000
-   ```
+3. **Navigate to** `http://localhost:8000` (if using a server)
 
 ## Usage
 
@@ -36,16 +41,15 @@ A static website for the Statistical Drafting Assistant that shows recommended c
 3. The recommended pick order table will populate with all cards in the set
 
 ### Managing Your Collection
-1. Click the "Add Card" button to open the card search modal
+1. Click the "Find Card" button to open the card search modal
 2. Type the name of a card to search for it
 3. Click on a card in the search results to add it to your collection
 4. Use the "Remove" button in the collection table to remove cards
-5. Use the "Clear Collection" button to remove all cards at once
+5. Use the "New Draft" button to remove all cards at once
 
 ### Understanding the Ratings
 - **Rating**: Current recommended rating (0-100) based on your collection
-- **P1P1 Rating**: First pick, first pack rating (baseline rating)
-- **Synergy**: Difference between current rating and P1P1 rating (shows how much your collection improves the card)
+- **Synergy**: Difference between current rating and baseline rating (shows how much your collection improves the card)
 
 ### Color Coding
 - **High Rating** (70+): Green
@@ -58,7 +62,7 @@ A static website for the Statistical Drafting Assistant that shows recommended c
 - **Frontend**: Pure HTML/CSS/JavaScript
 - **ONNX Models**: Neural network models converted to ONNX format for browser compatibility
 - **Card Data**: CSV files containing card information for each set
-- **Server**: Simple Python HTTP server with CORS support
+- **Hosting**: Static website deployable to GitHub Pages or any static hosting service
 
 ### File Structure
 ```
@@ -66,13 +70,11 @@ statistical-drafting-website/
 ├── index.html              # Main HTML file
 ├── styles.css              # CSS styles
 ├── script.js               # JavaScript application logic
-├── server.py               # Python HTTP server
+├── favicon.svg             # Website favicon
 ├── README.md               # This file
-└── statistical-drafting/   # Cloned repository with models and data
-    ├── data/
-    │   ├── cards/          # CSV files for each set
-    │   └── onnx/           # ONNX model files
-    └── ...
+└── data/                   # Data files for GitHub Pages
+    ├── cards/              # CSV files for each set
+    └── onnx/               # ONNX model files
 ```
 
 ### Model Information
@@ -85,14 +87,14 @@ Models are automatically selected based on the set and format.
 ## Development
 
 ### Adding New Sets
-1. Add the CSV file to `statistical-drafting/data/cards/`
-2. Add the ONNX model to `statistical-drafting/data/onnx/`
+1. Add the CSV file to `data/cards/`
+2. Add the ONNX model to `data/onnx/`
 3. Update the hardcoded sets list in `script.js`
 
 ### Modifying Styles
 Edit `styles.css` to customize the appearance. The design uses a modern, clean aesthetic with:
-- Gradient backgrounds
-- Card-based layouts
+- Clean layouts
+- Card-based designs
 - Responsive design
 - Color-coded ratings and rarities
 
@@ -104,11 +106,26 @@ The main application logic is in `script.js`. Key classes and methods:
 - `getCardRatings()`: Calculates ratings using the model
 - `updatePickOrder()`: Updates the pick order display
 
+## Deployment
+
+### GitHub Pages
+1. Push your code to a GitHub repository
+2. Enable GitHub Pages in repository settings
+3. Set source to "Deploy from a branch" and select your main branch
+4. Configure custom domain if desired
+
+### Other Static Hosting
+The website can be deployed to any static hosting service:
+- Netlify
+- Vercel
+- AWS S3 + CloudFront
+- Any web server
+
 ## Troubleshooting
 
 ### Common Issues
-1. **Models not loading**: Ensure the ONNX files are in the correct location
-2. **CORS errors**: Make sure you're using the Python server, not opening files directly
+1. **Models not loading**: Ensure the ONNX files are in the correct location (`data/onnx/`)
+2. **Card data not loading**: Ensure CSV files are in the correct location (`data/cards/`)
 3. **Slow performance**: Large sets may take a moment to load initially
 
 ### Browser Compatibility
