@@ -1,0 +1,16 @@
+# Ignore 17lands draft data files
+*.csv.gz
+
+# Ignore training set files
+*.pth
+
+# Ignore dev notebook
+notebooks/test.ipynb
+
+# Ignore auto-generated files
+.ipynb_checkpoints/
+.DS_Store
+*.egg-info
+__pycache__
+build/*
+training_sets/*
