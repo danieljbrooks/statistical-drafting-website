@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Drafting Assistant</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/ort.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Statistical Drafting</h1>
+            <p>Pick orders trained on 17Lands data — more details on <a href="https://github.com/danieljbrooks/statistical-drafting" target="_blank">GitHub</a></p>
+            
+            <h2>Setup</h2>
+            <div class="top-controls">
+                <div class="control-section">
+                    <h3>Select Set</h3>
+                    <div class="set-selection">
+                        <select id="setSelect">
+                            <option value="">Select a set...</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="newDraftBtn">New Draft</button>
+                        <button class="btn btn-secondary" id="findCardBtn">Find Card</button>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Rarity</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="rarity-common" name="rarity" value="common">
+                            <label for="rarity-common">Common</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="rarity-uncommon" name="rarity" value="uncommon">
+                            <label for="rarity-uncommon">Uncommon</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="rarity-rare" name="rarity" value="rare">
+                            <label for="rarity-rare">Rare</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="rarity-mythic" name="rarity" value="mythic">
+                            <label for="rarity-mythic">Mythic</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Color</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-W" name="color" value="W">
+                            <label for="color-W">White</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-U" name="color" value="U">
+                            <label for="color-U">Blue</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-B" name="color" value="B">
+                            <label for="color-B">Black</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-R" name="color" value="R">
+                            <label for="color-R">Red</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-G" name="color" value="G">
+                            <label for="color-G">Green</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-Multicolor" name="color" value="Multicolor">
+                            <label for="color-Multicolor">Multicolor</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="color-Colorless" name="color" value="Colorless">
+                            <label for="color-Colorless">Colorless</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>Cards to Show</h3>
+                    <select id="maxCardsSelect" class="max-cards-select">
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="deck">Deck</option>
+                        <option value="all">All</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="filterStatus" class="filter-status" style="display: none;">
+                Filters active: <span id="filterCount">0</span> cards shown
+            </div>
+        </header>
+        
+        <main>
+            <section class="pick-order-section">
+                <h2>Pick Order</h2>
+                <div class="table-container">
+                    <table id="pickOrderTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Color</th>
+                                <th>Rarity</th>
+                                <th>Rating</th>
+                                <th>Synergy</th>
+                                <th>Pick</th>
+                                <th>Remove</th>
+                                <th># Deck</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="8">Select a set to begin</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Collection Section - REMOVED -->
+        </main>
+    </div>
+
+    <!-- Add Card Modal -->
+    <div id="addCardModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Find Card</h3>
+            <div class="search-container">
+                <input type="text" id="cardSearch" placeholder="Search for a card to pick...">
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=1"></script>
+</body>
+</html>
