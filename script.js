@@ -15,7 +15,7 @@ class DraftingAssistant {
         this.originalFilters = null;
         
         // Available sets that have Premier Draft models
-        this.availableSetModels = ['FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU', 'VOW', 'STX', 'MID', 'AFR', 'KHM'];
+        this.availableSetModels = ['FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU', 'VOW', 'STX', 'MID'];
         console.log('Constructor complete, availableSetModels:', this.availableSetModels);
         
         // Don't initialize here - wait for DOM ready
@@ -209,7 +209,7 @@ class DraftingAssistant {
         const setOrder = [
             'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 
             'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 
-            'DMU', 'VOW', 'STX', 'MID', 'AFR', 'KHM'
+            'DMU', 'VOW', 'STX', 'MID'
         ];
         
         // Filter to only include sets that have Premier Draft models available
