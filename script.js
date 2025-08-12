@@ -3,6 +3,7 @@ class DraftingAssistant {
         console.log('DraftingAssistant constructor called');
         this.cardData = [];
         this.collection = {};
+        this.compareCollection = {};
         this.currentSet = null;
         this.onnxModel = null;
         
@@ -12,7 +13,6 @@ class DraftingAssistant {
             colors: [],
             maxCards: '10'
         };
-        this.originalFilters = null;
         
         // Available sets that have Premier Draft models
         this.availableSetModels = ['FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
@@ -28,8 +28,8 @@ class DraftingAssistant {
         });
 
         // Collection controls
-        document.getElementById('findCardBtn').addEventListener('click', () => {
-            this.showAddCardModal();
+        document.getElementById('findCardBtn').addEventListener('click', async () => {
+            await this.showAddCardModal();
         });
 
         document.getElementById('newDraftBtn').addEventListener('click', () => {
@@ -60,9 +60,6 @@ class DraftingAssistant {
 
         // Load available sets
         await this.loadAvailableSets();
-        
-        // Set initial filter UI state
-        this.updateFilterUIState('10');
     }
 
     initializeFilterListeners() {
@@ -78,7 +75,6 @@ class DraftingAssistant {
         if (maxCardsSelect) {
             maxCardsSelect.addEventListener('change', () => {
                 const maxCards = maxCardsSelect.value;
-                this.updateFilterUIState(maxCards);
                 this.applyFilters();
             });
         }
@@ -180,6 +176,13 @@ class DraftingAssistant {
                 };
             });
 
+            // Update the main cardData array with ratings so they're available for search
+            this.cardData.forEach((card, index) => {
+                card.rating = currentRatings[index] || 50;
+                card.p1p1_rating = p1p1Ratings[index] || 50;
+                card.synergy = (currentRatings[index] || 50) - (p1p1Ratings[index] || 50);
+            });
+
             console.log('Created pick order data, sorting by rating...');
             // Sort by rating (highest first)
             pickOrderData.sort((a, b) => b.rating - a.rating);
@@ -257,19 +260,27 @@ class DraftingAssistant {
 
         // Start new draft when changing sets
         this.collection = {};
+        this.compareCollection = {};
         // this.updateCollectionTable(); // No longer needed
+
+        // Clear compare section when changing sets
+        this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
 
         // Show loading message
         const tbody = document.querySelector('#pickOrderTable tbody');
-        tbody.innerHTML = '<tr><td colspan="8">Loading...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
 
         try {
             await this.loadCardData(setName);
             await this.loadModel(setName);
             this.applyFilters(); // Use filters instead of updatePickOrder
+            
+            // Update deck table
+            this.updateDeckTable();
         } catch (error) {
             console.error('Error loading set:', error);
-            tbody.innerHTML = '<tr><td colspan="8">Error loading set</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7">Error loading set</td></tr>';
         }
     }
 
@@ -434,14 +445,13 @@ class DraftingAssistant {
         tbody.innerHTML = '';
 
         if (pickOrderData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8">No cards found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7">No cards found</td></tr>';
             return;
         }
 
         pickOrderData.forEach(card => {
             const row = document.createElement('tr');
             row.setAttribute('data-color', card.color_identity);
-            const deckCount = this.collection[card.name] || 0;
             
             row.innerHTML = `
                 <td>${card.name}</td>
@@ -450,18 +460,20 @@ class DraftingAssistant {
                 <td class="rating ${this.getRatingClass(card.rating)}">${card.rating.toFixed(1)}</td>
                 <td class="synergy ${card.synergy >= 0 ? 'synergy-positive' : 'synergy-negative'}">${card.synergy >= 0 ? '+' : ''}${card.synergy.toFixed(1)}</td>
                 <td>
-                    <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(card.name)}">Pick</button>
+                    <button class="btn btn-compare" data-card-name="${this.escapeHtmlAttribute(card.name)}">Compare</button>
                 </td>
                 <td>
-                    ${deckCount > 0 ? `<button class="btn btn-remove" data-card-name="${this.escapeHtmlAttribute(card.name)}">Remove</button>` : ''}
+                    <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(card.name)}">Pick</button>
                 </td>
-                <td class="deck-count">${deckCount}</td>
             `;
             tbody.appendChild(row);
         });
 
-        // Add event listeners for pick and remove buttons
+        // Add event listeners for pick buttons
         this.addTableButtonListeners();
+        
+        // Update deck table
+        this.updateDeckTable();
     }
 
     escapeHtmlAttribute(text) {
@@ -480,12 +492,12 @@ class DraftingAssistant {
             });
         });
 
-        // Add event listeners for remove buttons
-        const removeButtons = document.querySelectorAll('#pickOrderTable .btn-remove');
-        removeButtons.forEach(button => {
+        // Add event listeners for compare buttons
+        const compareButtons = document.querySelectorAll('#pickOrderTable .btn-compare');
+        compareButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const cardName = e.target.getAttribute('data-card-name');
-                this.removeCardFromCollection(cardName);
+                this.addCardToCompare(cardName);
             });
         });
     }
@@ -496,10 +508,27 @@ class DraftingAssistant {
         return 'rating-low';
     }
 
-    showAddCardModal() {
+    async showAddCardModal() {
         if (!this.cardData) {
             alert('Please select a set first.');
             return;
+        }
+
+        // Ensure ratings are calculated before showing the modal
+        if (!this.cardData[0]?.rating && this.model) {
+            try {
+                // Calculate ratings for all cards if they haven't been calculated yet
+                const currentRatings = await this.getCardRatings(this.collection);
+                const p1p1Ratings = await this.getCardRatings({});
+                
+                this.cardData.forEach((card, index) => {
+                    card.rating = currentRatings[index] || 50;
+                    card.p1p1_rating = p1p1Ratings[index] || 50;
+                    card.synergy = (currentRatings[index] || 50) - (p1p1Ratings[index] || 50);
+                });
+            } catch (error) {
+                console.error('Error calculating ratings for modal:', error);
+            }
         }
 
         const modal = document.getElementById('addCardModal');
@@ -520,18 +549,40 @@ class DraftingAssistant {
             return;
         }
 
-        // Show the first 10 cards alphabetically
-        const initialCards = cardNames.slice(0, 10);
+        // Show all cards alphabetically (unaffected by filter)
+        const initialCards = cardNames;
         initialCards.forEach(cardName => {
+            const card = this.cardData.find(c => c.name === cardName);
             const item = document.createElement('div');
             item.className = 'search-result-item';
+            item.setAttribute('data-color', card.color_identity);
             item.innerHTML = `
-                <strong>${cardName}</strong> - ${this.getRarityAbbreviation(this.cardData.find(c => c.name === cardName).rarity)} - ${this.cardData.find(c => c.name === cardName).color_identity}
+                <div class="search-result-content">
+                    <div class="card-name">${cardName}</div>
+                    <div class="card-rarity">${this.getRarityAbbreviation(card.rarity)}</div>
+                    <div class="card-rating">${card.rating ? card.rating.toFixed(1) : 'N/A'}</div>
+                </div>
+                <div class="search-result-buttons">
+                    <button class="btn btn-compare" data-card-name="${this.escapeHtmlAttribute(cardName)}">Compare</button>
+                    <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(cardName)}">Pick</button>
+                </div>
             `;
-            item.addEventListener('click', () => {
+            
+            // Add event listener for compare button
+            const compareButton = item.querySelector('.btn-compare');
+            compareButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent row click
+                this.addCardToCompare(cardName);
+            });
+            
+            // Add event listener for pick button
+            const pickButton = item.querySelector('.btn-pick');
+            pickButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent row click
                 this.addCardToCollection(cardName);
                 document.getElementById('addCardModal').style.display = 'none';
             });
+            
             resultsContainer.appendChild(item);
         });
     }
@@ -563,13 +614,34 @@ class DraftingAssistant {
         results.forEach(card => {
             const item = document.createElement('div');
             item.className = 'search-result-item';
+            item.setAttribute('data-color', card.color_identity);
             item.innerHTML = `
-                <strong>${card.name}</strong> - ${this.getRarityAbbreviation(card.rarity)} - ${card.color_identity}
+                <div class="search-result-content">
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-rarity">${this.getRarityAbbreviation(card.rarity)}</div>
+                    <div class="card-rating">${card.rating ? card.rating.toFixed(1) : 'N/A'}</div>
+                </div>
+                <div class="search-result-buttons">
+                    <button class="btn btn-compare" data-card-name="${this.escapeHtmlAttribute(card.name)}">Compare</button>
+                    <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(card.name)}">Pick</button>
+                </div>
             `;
-            item.addEventListener('click', () => {
+            
+            // Add event listener for compare button
+            const compareButton = item.querySelector('.btn-compare');
+            compareButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent row click
+                this.addCardToCompare(card.name);
+            });
+            
+            // Add event listener for pick button
+            const pickButton = item.querySelector('.btn-pick');
+            pickButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent row click
                 this.addCardToCollection(card.name);
                 document.getElementById('addCardModal').style.display = 'none';
             });
+            
             resultsContainer.appendChild(item);
         });
     }
@@ -580,8 +652,111 @@ class DraftingAssistant {
         } else {
             this.collection[cardName]++;
         }
+        
+        // Clear compare collection when deck changes
+        this.compareCollection = {};
+        this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
+        
         // this.updateCollectionTable(); // No longer needed
         this.applyFilters(); // Use filters instead of updatePickOrder
+    }
+
+    addCardToCompare(cardName) {
+        // Check if card is already being compared
+        if (this.compareCollection[cardName]) {
+            // Show feedback that card is already being compared
+            console.log(`${cardName} is already being compared`);
+            return; // Don't add duplicate
+        }
+        
+        // Add card to compare collection (only one instance per card)
+        this.compareCollection[cardName] = true;
+        
+        // Update compare table
+        this.updateCompareTable();
+        
+        // Show compare section
+        this.showCompareSection();
+    }
+
+    removeCardFromCompare(cardName) {
+        delete this.compareCollection[cardName];
+        
+        // Update compare table
+        this.updateCompareTable();
+        
+        // Hide compare section if empty
+        this.hideCompareSectionIfEmpty();
+    }
+
+    pickCardFromCompare(cardName) {
+        // Add card to deck collection (this will clear compare collection)
+        this.addCardToCollection(cardName);
+        
+        // Update deck table
+        this.updateDeckTable();
+    }
+
+    updateCompareTable() {
+        const tbody = document.querySelector('#compareTable tbody');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        const compareCards = Object.keys(this.compareCollection);
+        
+        if (compareCards.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3">No cards to compare</td></tr>';
+            return;
+        }
+        
+        // Sort compare cards by rating (highest to lowest)
+        const sortedCompareCards = compareCards
+            .map(cardName => {
+                const card = this.cardData.find(c => c.name === cardName);
+                return { cardName, card, rating: card?.rating || 0 };
+            })
+            .filter(item => item.card) // Filter out cards not found in cardData
+            .sort((a, b) => b.rating - a.rating); // Sort by rating descending
+        
+        sortedCompareCards.forEach(({ cardName, card }) => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-color', card.color_identity);
+            row.innerHTML = `
+                <td>${cardName}</td>
+                <td class="rating ${this.getRatingClass(card.rating)}">${card.rating ? card.rating.toFixed(1) : 'N/A'}</td>
+                <td>
+                    <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(cardName)}">Pick</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        // Add event listeners for pick buttons in compare table
+        const pickButtons = document.querySelectorAll('#compareTable .btn-pick');
+        pickButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const cardName = e.target.getAttribute('data-card-name');
+                this.pickCardFromCompare(cardName);
+            });
+        });
+    }
+
+    showCompareSection() {
+        const compareSection = document.getElementById('compareSection');
+        if (compareSection) {
+            compareSection.style.display = 'block';
+        }
+    }
+
+    hideCompareSectionIfEmpty() {
+        if (Object.keys(this.compareCollection).length === 0) {
+            const compareSection = document.getElementById('compareSection');
+            if (compareSection) {
+                compareSection.style.display = 'none';
+            }
+        }
     }
 
     pickCard(cardName) {
@@ -590,6 +765,14 @@ class DraftingAssistant {
         
         // Show feedback
         console.log(`Picked: ${cardName}`);
+        
+        // Clear compare collection when picking
+        this.compareCollection = {};
+        this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
+        
+        // Update deck table
+        this.updateDeckTable();
         
         // The updatePickOrder() call in addCardToCollection will recalculate ratings
         // with the new collection, so the Rating and P1P1 Rating columns will now differ
@@ -601,8 +784,63 @@ class DraftingAssistant {
         } else if (this.collection[cardName] > 1) {
             this.collection[cardName]--;
         }
+        
+        // Clear compare collection when deck changes
+        this.compareCollection = {};
+        this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
+        
         // this.updateCollectionTable(); // No longer needed
         this.applyFilters(); // Use filters instead of updatePickOrder
+        
+        // Update deck table
+        this.updateDeckTable();
+    }
+
+    updateDeckTable() {
+        const tbody = document.querySelector('#deckTable tbody');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        
+        const deckCards = Object.entries(this.collection).filter(([_, count]) => count > 0);
+        
+        if (deckCards.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4">No cards in deck</td></tr>';
+            return;
+        }
+        
+        // Sort deck cards by rating (highest to lowest) and add rating data
+        const sortedDeckCards = deckCards
+            .map(([cardName, count]) => {
+                const card = this.cardData.find(c => c.name === cardName);
+                return { cardName, count, card, rating: card?.rating || 0 };
+            })
+            .filter(item => item.card) // Filter out cards not found in cardData
+            .sort((a, b) => b.rating - a.rating); // Sort by rating descending
+        
+        sortedDeckCards.forEach(({ cardName, count, card }) => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-color', card.color_identity);
+            row.innerHTML = `
+                <td>${cardName}</td>
+                <td>${count}</td>
+                <td class="rating ${this.getRatingClass(card.rating)}">${card.rating ? card.rating.toFixed(1) : 'N/A'}</td>
+                <td>
+                    <button class="btn btn-remove" data-card-name="${this.escapeHtmlAttribute(cardName)}">Remove</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        // Add event listeners for remove buttons in deck table
+        const removeButtons = document.querySelectorAll('#deckTable .btn-remove');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const cardName = e.target.getAttribute('data-card-name');
+                this.removeCardFromCollection(cardName);
+            });
+        });
     }
 
     clearCollection() {
@@ -612,74 +850,18 @@ class DraftingAssistant {
 
     newDraft() {
         this.collection = {};
+        this.compareCollection = {};
         this.applyFilters();
+        
+        // Update tables
+        this.updateDeckTable();
+        this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
     }
 
-    updateFilterUIState(maxCards) {
-        if (maxCards === 'deck') {
-            // Store current filter state before overriding
-            this.originalFilters = this.getFilterValues();
-            
-            // Check all rarity checkboxes and disable them
-            document.querySelectorAll('input[name="rarity"]').forEach(checkbox => {
-                checkbox.checked = true;
-                checkbox.disabled = true;
-            });
-            
-            // Check all color checkboxes and disable them
-            document.querySelectorAll('input[name="color"]').forEach(checkbox => {
-                checkbox.checked = true;
-                checkbox.disabled = true;
-            });
-            
-            this.showFilterOverrideMessage('All rarity and color filters enabled for Deck view');
-        } else {
-            // Restore original filter state if we have it
-            if (this.originalFilters) {
-                // Restore rarity checkboxes
-                document.querySelectorAll('input[name="rarity"]').forEach(checkbox => {
-                    checkbox.disabled = false;
-                    checkbox.checked = this.originalFilters.rarities.includes(checkbox.value);
-                });
-                
-                // Restore color checkboxes
-                document.querySelectorAll('input[name="color"]').forEach(checkbox => {
-                    checkbox.disabled = false;
-                    checkbox.checked = this.originalFilters.colors.includes(checkbox.value);
-                });
-            } else {
-                // If no original state, just enable all checkboxes
-                document.querySelectorAll('input[name="rarity"], input[name="color"]').forEach(checkbox => {
-                    checkbox.disabled = false;
-                });
-            }
-            
-            this.hideFilterOverrideMessage();
-        }
-    }
 
-    showFilterOverrideMessage(message) {
-        let messageDiv = document.getElementById('filterOverrideMessage');
-        if (!messageDiv) {
-            messageDiv = document.createElement('div');
-            messageDiv.id = 'filterOverrideMessage';
-            messageDiv.className = 'filter-override-message';
-            
-            // Insert after the filters div
-            const filtersDiv = document.querySelector('.filters');
-            if (filtersDiv) {
-                filtersDiv.appendChild(messageDiv);
-            }
-        }
-        messageDiv.textContent = message;
-    }
 
-    hideFilterOverrideMessage() {
-        const message = document.querySelector('.filter-override-message');
-        if (message) {
-            message.remove();
-        }
-    }
+
 
     getRarityAbbreviation(rarity) {
         // Handle special rarity cards

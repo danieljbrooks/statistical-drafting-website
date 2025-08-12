@@ -24,7 +24,6 @@
             <h1>Statistical Drafting</h1>
             <p>Pick orders trained on 17Lands data — more details on <a href="https://github.com/danieljbrooks/statistical-drafting" target="_blank">GitHub</a></p>
             
-            <h2>Setup</h2>
             <div class="top-controls">
                 <div class="control-section">
                     <h3>Select Set</h3>
@@ -105,8 +104,7 @@
                     <select id="maxCardsSelect" class="max-cards-select">
                         <option value="10">10</option>
                         <option value="50">50</option>
-                        <option value="deck">Deck</option>
-                        <option value="all">All</option>
+                        <option value="all" selected>All</option>
                     </select>
                 </div>
             </div>
@@ -117,32 +115,73 @@
         </header>
         
         <main>
-            <section class="pick-order-section">
-                <h2>Pick Order</h2>
-                <div class="table-container">
-                    <table id="pickOrderTable" class="table">
-                        <thead>
+            <div class="main-content">
+                <section class="pick-order-section">
+                    <h2>Pick Order</h2>
+                    <div class="table-container">
+                        <table id="pickOrderTable" class="table">
+                                                    <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Color</th>
                                 <th>Rarity</th>
                                 <th>Rating</th>
                                 <th>Synergy</th>
+                                <th>Compare</th>
                                 <th>Pick</th>
-                                <th>Remove</th>
-                                <th># Deck</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="8">Select a set to begin</td>
+                                <td colspan="7">Select a set to begin</td>
                             </tr>
                         </tbody>
-                    </table>
-                </div>
-            </section>
+                        </table>
+                    </div>
+                </section>
 
-            <!-- Collection Section - REMOVED -->
+                <div class="right-column">
+                    <section class="compare-section" id="compareSection" style="display: none;">
+                    <h2>Compare</h2>
+                    <div class="table-container">
+                        <table id="compareTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Rating</th>
+                                    <th>Pick</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">No cards to compare</td>
+                                </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="deck-section">
+                    <h2>Deck</h2>
+                    <div class="table-container">
+                        <table id="deckTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>#</th>
+                                    <th>Rating</th>
+                                    <th>Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">No cards in deck</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -152,7 +191,7 @@
             <span class="close">&times;</span>
             <h3>Find Card</h3>
             <div class="search-container">
-                <input type="text" id="cardSearch" placeholder="Search for a card to pick...">
+                <input type="text" id="cardSearch" placeholder="Search for a card">
                 <div id="searchResults" class="search-results"></div>
             </div>
         </div>

@@ -197,6 +197,24 @@ header p a:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.btn-compare {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-compare:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+}
+
 .btn-pick {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
@@ -230,7 +248,7 @@ header p a:hover {
 
 .btn-remove:hover {
     background-color: var(--bg-secondary);
-    border-color: var(--danger);
+    border-color: var(--accent-primary);
     transform: translateY(-1px);
 }
 
@@ -241,9 +259,7 @@ header p a:hover {
     font-size: 0.9rem;
 }
 
-.btn-pick:hover {
-    background-color: #40c057;
-}
+
 
 .btn-danger {
     background: var(--danger);
@@ -329,19 +345,80 @@ header p a:hover {
 
 .search-result-item {
     padding: 8px 12px;
-    cursor: pointer;
     border-bottom: 1px solid var(--border-secondary);
     transition: background-color 0.2s ease;
     font-size: 0.9rem;
     color: var(--text-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
 }
 
-.search-result-item:hover {
-    background-color: var(--bg-tertiary);
+.search-result-content {
+    flex: 1;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
 }
+
+.card-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-rarity {
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.card-rating {
+    color: var(--text-primary);
+    text-align: center;
+    font-weight: 500;
+}
+
+.search-result-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
 
 .search-result-item:last-child {
     border-bottom: none;
+}
+
+/* Color backgrounds for search result items - matching pick order table */
+.search-result-item[data-color="W"] {
+    background-color: rgba(248, 246, 224, 0.4);
+}
+
+.search-result-item[data-color="U"] {
+    background-color: rgba(135, 206, 235, 0.25);
+}
+
+.search-result-item[data-color="B"] {
+    background-color: rgba(64, 64, 64, 0.25);
+}
+
+.search-result-item[data-color="R"] {
+    background-color: rgba(255, 107, 107, 0.25);
+}
+
+.search-result-item[data-color="G"] {
+    background-color: rgba(144, 238, 144, 0.25);
+}
+
+.search-result-item[data-color="Multicolor"] {
+    background-color: rgba(212, 175, 55, 0.3);
+}
+
+.search-result-item[data-color="Colorless"] {
+    background-color: rgba(216, 216, 216, 0.4);
 }
 
 /* Card rarity colors - simplified abbreviations */
@@ -415,7 +492,7 @@ header p a:hover {
 
 /* Row coloring based on color identity - stronger and more noticeable */
 tr[data-color="W"] {
-    background-color: rgba(255, 255, 224, 0.3);
+    background-color: rgba(248, 246, 224, 0.4);
 }
 
 tr[data-color="U"] {
@@ -435,11 +512,11 @@ tr[data-color="G"] {
 }
 
 tr[data-color="Multicolor"] {
-    background-color: rgba(139, 69, 19, 0.25);
+    background-color: rgba(212, 175, 55, 0.3);
 }
 
 tr[data-color="Colorless"] {
-    background-color: rgba(210, 180, 140, 0.25);
+    background-color: rgba(216, 216, 216, 0.4);
 }
 
 
@@ -518,6 +595,59 @@ th {
 
 
 
+/* Main content layout */
+.main-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Right column container for Compare and Deck sections */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pick-order-section {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.deck-section {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+}
+
+.compare-section {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.compare-section h2 {
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.deck-section h2 {
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .container {
@@ -537,6 +667,11 @@ th {
     }
     
     .top-controls {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .main-content {
         grid-template-columns: 1fr;
         gap: 15px;
     }
