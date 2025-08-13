@@ -21585,3 +21585,591 @@ id,expansion,name,rarity,color_identity,mana_value,types,is_booster
 96873,FIC,"Y'shtola, Night's Blessed",mythic,BUW,4,Legendary Creature - Cat Warlock,False
 96874,FIC,"Yuna, Grand Summoner",mythic,GUW,4,Legendary Creature - Human Cleric,False
 96867,FIC,"Celes, Rune Knight",mythic,BRW,4,Legendary Creature - Human Wizard Knight,False
+97615,FIC,Sun Titan,mythic,W,6,Creature - Giant,False
+97596,FIC,Cleansing Nova,rare,W,5,Sorcery,False
+97628,FIC,Into the Story,uncommon,U,7,Instant,False
+97793,FIC,Sunlit Marsh,common,BW,0,Land - Plains Swamp,False
+97714,FIC,Meteor Golem,uncommon,,7,Artifact Creature - Golem,False
+97682,FIC,Bedevil,rare,BR,3,Instant,False
+97758,FIC,Fortified Village,rare,GW,0,Land,False
+97770,FIC,Nesting Grounds,uncommon,,0,Land,False
+97657,FIC,Furious Rise,uncommon,R,3,Enchantment,False
+97624,FIC,Dig Through Time,rare,U,8,Instant,False
+97633,FIC,Sublime Epiphany,rare,U,6,Instant,False
+97750,FIC,Drowned Catacomb,rare,BU,0,Land,False
+97623,FIC,Chasm Skulker,rare,U,3,Creature - Squid Horror,False
+97691,FIC,Priest of Fell Rites,rare,BW,2,Creature - Human Warlock,False
+97631,FIC,Pull from Tomorrow,rare,U,2,Instant,False
+97749,FIC,Dragonskull Summit,rare,BR,0,Land,False
+97784,FIC,Shineshadow Snarl,rare,BW,0,Land,False
+97797,FIC,Temple of Enlightenment,rare,UW,0,Land,False
+97681,FIC,Baleful Strix,rare,BU,2,Artifact Creature - Bird,False
+97794,FIC,Sunpetal Grove,rare,GW,0,Land,False
+97742,FIC,Choked Estuary,rare,BU,0,Land,False
+97644,FIC,Pitiless Plunderer,uncommon,B,4,Creature - Human Pirate,False
+97676,FIC,Rampant Growth,common,G,2,Sorcery,False
+97680,FIC,Altered Ego,rare,GU,4,Creature - Shapeshifter,False
+97637,FIC,Crux of Fate,rare,B,5,Sorcery,False
+97762,FIC,Glacial Fortress,rare,UW,0,Land,False
+97771,FIC,Nomad Outpost,uncommon,BRW,0,Land,False
+97590,FIC,Angel of the Ruins,uncommon,W,7,Artifact Creature - Angel,False
+97638,FIC,Exsanguinate,uncommon,B,2,Sorcery,False
+97767,FIC,Isolated Chapel,rare,BW,0,Land,False
+97670,FIC,Hardened Scales,rare,G,1,Enchantment,False
+97679,FIC,Tireless Tracker,rare,G,3,Creature - Human Scout,False
+97756,FIC,Foreboding Ruins,rare,BR,0,Land,False
+97745,FIC,Contaminated Aquifer,common,BU,0,Land - Island Swamp,False
+97026,FIC,Command Tower,common,,0,Land,False
+97671,FIC,Harmonize,uncommon,G,4,Sorcery,False
+97741,FIC,Canopy Vista,rare,GW,0,Land - Forest Plains,False
+97667,FIC,Forgotten Ancient,rare,G,4,Creature - Elemental,False
+97609,FIC,Path to Exile,uncommon,W,1,Instant,False
+97710,FIC,Inspiring Statuary,rare,,3,Artifact,False
+97598,FIC,Collective Effort,rare,W,3,Sorcery,False
+97606,FIC,Lingering Souls,uncommon,BW,3,Sorcery,False
+97593,FIC,Authority of the Consuls,rare,W,1,Enchantment,False
+97023,FIC,Command Tower,common,,0,Land,False
+97732,FIC,Tome of Legends,rare,,2,Artifact,False
+97760,FIC,Game Trail,rare,GR,0,Land,False
+97776,FIC,Radiant Grove,common,GW,0,Land - Forest Plains,False
+97625,FIC,Hypnotic Sprite,uncommon,U,2,Creature - Faerie,False
+97675,FIC,Path of Discovery,rare,G,4,Enchantment,False
+97723,FIC,Solemn Simulacrum,rare,,4,Artifact Creature - Golem,False
+97781,FIC,Scavenger Grounds,rare,,0,Land - Desert,False
+97621,FIC,Vanquish the Horde,rare,W,8,Sorcery,False
+97802,FIC,Vineglimmer Snarl,rare,GU,0,Land,False
+97724,FIC,Swiftfoot Boots,uncommon,,2,Artifact - Equipment,False
+97696,FIC,Arcane Signet,common,,2,Artifact,False
+97803,FIC,Wooded Ridgeline,common,GR,0,Land - Mountain Forest,False
+97738,FIC,Battlefield Forge,rare,RW,0,Land,False
+97716,FIC,Mind Stone,uncommon,,2,Artifact,False
+97641,FIC,Murderous Rider,rare,B,3,Creature - Zombie Knight,False
+97766,FIC,Idyllic Beachfront,common,UW,0,Land - Plains Island,False
+97617,FIC,Swords to Plowshares,uncommon,W,1,Instant,False
+97605,FIC,Grateful Apparition,uncommon,W,2,Creature - Spirit,False
+97694,FIC,Void Rend,rare,BUW,3,Instant,False
+97687,FIC,Endless Detour,rare,GUW,3,Instant,False
+97780,FIC,Sacred Peaks,common,RW,0,Land - Mountain Plains,False
+97686,FIC,Decimate,rare,GR,4,Sorcery,False
+97627,FIC,Inexorable Tide,rare,U,5,Enchantment,False
+97646,FIC,Rise of the Dark Realms,mythic,B,9,Sorcery,False
+97759,FIC,Furycalm Snarl,rare,RW,0,Land,False
+97673,FIC,Inspiring Call,uncommon,G,3,Instant,False
+97744,FIC,Clifftop Retreat,rare,RW,0,Land,False
+97603,FIC,Farewell,rare,W,6,Sorcery,False
+97717,FIC,Relic of Legends,uncommon,,3,Artifact,False
+97666,FIC,Fight Rigging,rare,G,3,Enchantment,False
+97663,FIC,Cultivate,common,G,3,Sorcery,False
+97775,FIC,Prairie Stream,rare,UW,0,Land - Plains Island,False
+97740,FIC,Brushland,rare,GW,0,Land,False
+97645,FIC,Reanimate,rare,B,1,Sorcery,False
+97796,FIC,Tangled Islet,common,GU,0,Land - Forest Island,False
+97614,FIC,Secret Rendezvous,uncommon,W,3,Sorcery,False
+97689,FIC,Legions to Ashes,rare,BW,3,Sorcery,False
+97778,FIC,Rootbound Crag,rare,GR,0,Land,False
+97601,FIC,Destroy Evil,common,W,2,Instant,False
+97743,FIC,Cinder Glade,rare,GR,0,Land - Mountain Forest,False
+97791,FIC,Sunken Hollow,rare,BU,0,Land - Island Swamp,False
+97751,FIC,Evolving Wilds,common,,0,Land,False
+97684,FIC,Bred for the Hunt,uncommon,GU,3,Enchantment,False
+97761,FIC,Geothermal Bog,common,BR,0,Land - Swamp Mountain,False
+97747,FIC,Demolition Field,uncommon,,0,Land,False
+97685,FIC,Crackling Doom,uncommon,BRW,3,Instant,False
+97705,FIC,Darksteel Plate,rare,,3,Artifact - Equipment,False
+97636,FIC,Bastion of Remembrance,uncommon,B,3,Enchantment,False
+97799,FIC,Temple of Plenty,rare,GW,0,Land,False
+97737,FIC,Ash Barrens,common,,0,Land,False
+97025,FIC,Command Tower,common,,0,Land,False
+97654,FIC,Chaos Warp,rare,R,3,Instant,False
+97698,FIC,Arcane Signet,common,,2,Artifact,False
+97701,FIC,Colossus Hammer,uncommon,,1,Artifact - Equipment,False
+97659,FIC,Professional Face-Breaker,rare,R,3,Creature - Human Warrior,False
+97692,FIC,Ruinous Ultimatum,rare,BRW,7,Sorcery,False
+97672,FIC,Incubation Druid,rare,G,2,Creature - Elf Druid,False
+97640,FIC,Morbid Opportunist,uncommon,B,3,Creature - Human Rogue,False
+97697,FIC,Arcane Signet,common,,2,Artifact,False
+97774,FIC,Port Town,rare,UW,0,Land,False
+97690,FIC,Mortify,uncommon,BW,3,Instant,False
+97622,FIC,Archmage Emeritus,rare,U,4,Creature - Human Wizard,False
+97695,FIC,Arcane Signet,common,,2,Artifact,False
+97788,FIC,Spire of Industry,rare,,0,Land,False
+97619,FIC,Tragic Arrogance,rare,W,5,Sorcery,False
+97024,FIC,Command Tower,common,,0,Land,False
+97634,FIC,Torrential Gearhulk,rare,U,6,Artifact Creature - Construct,False
+97655,FIC,Combustible Gearhulk,mythic,R,6,Artifact Creature - Construct,False
+97765,FIC,Hinterland Harbor,rare,GU,0,Land,False
+97664,FIC,Duskshell Crawler,common,G,2,Creature - Insect,False
+97653,FIC,Big Score,common,R,4,Instant,False
+97787,FIC,Smoldering Marsh,rare,BR,0,Land - Swamp Mountain,False
+97711,FIC,Key to the City,rare,,2,Artifact,False
+97607,FIC,Luminous Broodmoth,mythic,W,4,Creature - Insect,False
+97798,FIC,Temple of Mystery,rare,GU,0,Land,False
+97801,FIC,Underground River,rare,BU,0,Land,False
+97632,FIC,Rite of Replication,rare,U,4,Sorcery,False
+97789,FIC,Sulfurous Springs,rare,BR,0,Land,False
+97015,FIC,"Celes, Rune Knight",mythic,BRW,4,Legendary Creature - Human Wizard Knight,False
+97016,FIC,"Cloud, Ex-SOLDIER",mythic,GRW,5,Legendary Creature - Human Soldier Mercenary,False
+97017,FIC,"G'raha Tia, Scion Reborn",mythic,BUW,3,Legendary Creature - Cat Wizard,False
+97018,FIC,"Terra, Herald of Hope",mythic,BRW,3,Legendary Creature - Human Wizard Warrior,False
+97019,FIC,"Tidus, Yuna's Guardian",mythic,GUW,3,Legendary Creature - Human Warrior,False
+97020,FIC,"Tifa, Martial Artist",mythic,GRW,4,Legendary Creature - Human Monk,False
+97021,FIC,"Y'shtola, Night's Blessed",mythic,BUW,4,Legendary Creature - Cat Warlock,False
+97022,FIC,"Yuna, Grand Summoner",mythic,GUW,4,Legendary Creature - Human Cleric,False
+97626,FIC,Mesmeric Glare,uncommon,U,3,Instant - Adventure,False
+97642,FIC,Swift End,rare,B,3,Instant - Adventure,False
+97808,TFIC,Squid,token,,0,Creature - Squid,False
+97811,TFIC,Clue,token,,0,Artifact - Clue,False
+97804,TFIC,Human Soldier,token,,0,Creature - Human Soldier,False
+97806,TFIC,Spirit,token,,0,Creature - Spirit,False
+96743,EOE,Weftstalker Ardent,uncommon,R,3,Creature - Drix Artificer,True
+96755,EOE,Eusocial Engineering,uncommon,G,5,Enchantment,True
+96753,EOE,Edge Rover,uncommon,G,1,Artifact Creature - Robot Scout,True
+96766,EOE,Icetill Explorer,rare,G,4,Creature - Insect Scout,True
+96717,EOE,Melded Moxite,common,R,2,Artifact,True
+96605,EOE,Reroute Systems,uncommon,W,1,Instant,True
+96765,EOE,Icecave Crasher,common,G,4,Creature - Beast,True
+96592,EOE,Focus Fire,common,W,1,Instant,True
+96763,EOE,Harmonious Grovestrider,uncommon,G,5,Creature - Beast,True
+96700,EOE,Vote Out,uncommon,B,4,Sorcery,True
+96614,EOE,Sunstar Chaplain,rare,W,2,Creature - Human Cleric,True
+96689,EOE,"Sothera, the Supervoid",mythic,B,4,Legendary Enchantment,True
+96652,EOE,Starfield Vocalist,rare,U,4,Creature - Human Bard,True
+96778,EOE,Seedship Agrarian,uncommon,G,4,Creature - Insect Scientist,True
+96789,EOE,Cosmogoyf,rare,BG,2,Creature - Elemental Lhurgoyf,True
+96659,EOE,Uthros Scanship,uncommon,U,4,Artifact - Spacecraft,True
+96684,EOE,Monoist Circuit-Feeder,uncommon,B,6,Artifact Creature - Nautilus,True
+96708,EOE,Frontline War-Rager,common,R,3,Creature - Kavu Soldier,True
+96758,EOE,Fungal Colossus,common,G,7,Creature - Fungus Beast,True
+96667,EOE,Dark Endurance,common,B,2,Instant,True
+96576,EOE,"Tezzeret, Cruel Captain",mythic,,3,Legendary Planeswalker - Tezzeret,True
+96676,EOE,Gravblade Heavy,common,B,4,Creature - Human Soldier,True
+96711,EOE,Invasive Maneuvers,uncommon,R,2,Instant,True
+96816,EOE,Extinguisher Battleship,rare,,8,Artifact - Spacecraft,True
+96825,EOE,Breeding Pool,rare,GU,0,Land - Forest Island,True
+96639,EOE,Mechan Shieldmate,common,U,2,Artifact Creature - Robot Soldier,True
+96741,EOE,Warmaker Gunship,rare,R,3,Artifact - Spacecraft,True
+96660,EOE,Weftwalking,mythic,U,6,Enchantment,True
+96584,EOE,Dawnstrike Vanguard,uncommon,W,6,Creature - Human Knight,True
+96669,EOE,Depressurize,common,B,2,Instant,True
+96713,EOE,Kavaron Harrier,uncommon,R,1,Artifact Creature - Robot Soldier,True
+96728,EOE,Red Tiger Mechan,common,R,4,Artifact Creature - Robot Cat,True
+96729,EOE,Remnant Elemental,uncommon,R,2,Creature - Elemental,True
+96647,EOE,Scour for Scrap,uncommon,U,4,Instant,True
+96797,EOE,Pinnacle Emissary,rare,RU,3,Artifact Creature - Robot,True
+96665,EOE,Chorale of the Void,rare,B,4,Enchantment - Aura,True
+96644,EOE,Mouth of the Storm,uncommon,U,7,Creature - Elemental,True
+96817,EOE,Nutrient Block,common,,1,Artifact - Food,True
+96606,EOE,Rescue Skiff,uncommon,W,6,Artifact - Spacecraft,True
+96804,EOE,Station Monitor,uncommon,UW,2,Creature - Lizard Artificer,True
+96759,EOE,Galactic Wayfarer,common,G,3,Creature - Human Scout,True
+96810,EOE,Chrome Companion,common,,2,Artifact Creature - Dog,True
+96735,EOE,Systems Override,uncommon,R,3,Sorcery,True
+96829,EOE,"Kavaron, Memorial World",mythic,R,0,Land - Planet,True
+96646,EOE,Quantum Riddler,mythic,U,5,Creature - Sphinx,True
+96690,EOE,Sunset Saboteur,rare,B,2,Creature - Human Rogue,True
+96780,EOE,Shattered Wings,common,G,3,Sorcery,True
+96623,EOE,Cloudsculpt Technician,common,U,3,Creature - Jellyfish Artificer,True
+96692,EOE,Susurian Voidborn,uncommon,B,3,Creature - Vampire Soldier,True
+96656,EOE,Tractor Beam,uncommon,U,4,Enchantment - Aura,True
+96597,EOE,Knight Luminary,common,W,4,Creature - Human Knight,True
+96617,EOE,Wedgelight Rammer,uncommon,W,4,Artifact - Spacecraft,True
+96650,EOE,Specimen Freighter,uncommon,U,6,Artifact - Spacecraft,True
+96742,EOE,Weapons Manufacturing,rare,R,2,Enchantment,True
+96719,EOE,Memorial Vault,rare,R,4,Artifact,True
+96783,EOE,Tapestry Warden,uncommon,G,4,Artifact Creature - Robot Soldier,True
+96771,EOE,Meltstrider Eulogist,uncommon,G,3,Creature - Insect Soldier,True
+96734,EOE,Slagdrill Scrapper,common,R,1,Artifact Creature - Robot Scout,True
+96792,EOE,"Haliya, Ascendant Cadet",uncommon,GW,5,Legendary Creature - Human Soldier,True
+96683,EOE,Lightless Evangel,uncommon,B,2,Creature - Vampire Cleric,True
+96603,EOE,Radiant Strike,common,W,4,Instant,True
+96788,EOE,Biotech Specialist,rare,GR,2,Creature - Insect Scientist,True
+96745,EOE,Atmospheric Greenhouse,uncommon,G,5,Artifact - Spacecraft,True
+96754,EOE,Eumidian Terrabotanist,uncommon,G,2,Creature - Insect Druid,True
+96705,EOE,Debris Field Crusher,uncommon,R,5,Artifact - Spacecraft,True
+96622,EOE,Cerebral Download,uncommon,U,5,Instant,True
+96702,EOE,Zero Point Ballad,rare,B,1,Sorcery,True
+96596,EOE,Honored Knight-Captain,uncommon,W,2,Creature - Human Advisor Knight,True
+96634,EOE,Illvoi Light Jammer,common,U,2,Artifact - Equipment,True
+96716,EOE,Lithobraking,uncommon,R,3,Instant,True
+96836,EOE,Plains,basic,W,0,Basic Land - Plains,True
+96724,EOE,Oreplate Pangolin,common,R,2,Artifact Creature - Robot Pangolin,True
+96583,EOE,Cosmogrand Zenith,mythic,W,3,Creature - Human Soldier,True
+96756,EOE,Famished Worldsire,mythic,G,8,Creature - Leviathan,True
+96726,EOE,Plasma Bolt,common,R,1,Sorcery,True
+96638,EOE,Mechan Navigator,uncommon,U,2,Artifact Creature - Robot Pilot,True
+96840,EOE,Swamp,basic,B,0,Basic Land - Swamp,True
+96625,EOE,Consult the Star Charts,rare,U,2,Instant,True
+96820,EOE,Thaumaton Torpedo,common,,1,Artifact,True
+96687,EOE,Requiem Monolith,rare,B,3,Artifact,True
+96648,EOE,Selfcraft Mechan,common,U,4,Artifact Creature - Robot Artificer,True
+96832,EOE,Stomping Ground,rare,GR,0,Land - Mountain Forest,True
+96636,EOE,Lost in Space,common,U,4,Instant,True
+96740,EOE,Vaultguard Trooper,uncommon,R,5,Creature - Kavu Soldier,True
+96704,EOE,Cut Propulsion,uncommon,R,3,Instant,True
+96649,EOE,Sinister Cryologist,common,U,3,Creature - Jellyfish Wizard,True
+96677,EOE,Gravkill,common,B,4,Instant,True
+96747,EOE,Biosynthic Burst,common,G,2,Instant,True
+96686,EOE,Perigee Beckoner,common,B,5,Creature - Horror,True
+96779,EOE,Seedship Impact,uncommon,G,2,Instant,True
+96762,EOE,Glacier Godmaw,uncommon,G,7,Creature - Leviathan,True
+96580,EOE,Banishing Light,common,W,3,Enchantment,True
+96744,EOE,Zookeeper Mechan,common,R,2,Artifact Creature - Robot,True
+96714,EOE,Kavaron Skywarden,common,R,5,Creature - Kavu Soldier,True
+96678,EOE,Gravpack Monoist,common,B,3,Creature - Human Scout,True
+96703,EOE,Bombard,common,R,3,Instant,True
+96811,EOE,Dauntless Scrapbot,uncommon,,3,Artifact Creature - Robot,True
+96631,EOE,Gigastorm Titan,uncommon,U,5,Creature - Elemental,True
+96794,EOE,Interceptor Mechan,uncommon,BR,4,Artifact Creature - Robot,True
+96809,EOE,Bygone Colossus,uncommon,,9,Artifact Creature - Robot Giant,True
+96581,EOE,Beyond the Quiet,rare,W,5,Sorcery,True
+96600,EOE,Luxknight Breacher,common,W,4,Creature - Human Knight,True
+96774,EOE,Mightform Harmonizer,rare,G,4,Creature - Insect Druid,True
+96697,EOE,Umbral Collar Zealot,uncommon,B,2,Creature - Human Cleric,True
+96578,EOE,Astelli Reclaimer,rare,W,5,Creature - Angel Warrior,True
+96691,EOE,Susurian Dirgecraft,uncommon,B,5,Artifact - Spacecraft,True
+96679,EOE,Hullcarver,common,B,1,Artifact Creature - Robot Assassin,True
+96723,EOE,Orbital Plunge,common,R,4,Sorcery,True
+96814,EOE,The Endstone,mythic,,7,Legendary Artifact,True
+96831,EOE,Secluded Starforge,rare,,0,Land,True
+96750,EOE,Close Encounter,uncommon,G,2,Instant,True
+96784,EOE,Terrasymbiosis,rare,G,3,Enchantment,True
+96621,EOE,Atomic Microsizer,uncommon,U,1,Artifact - Equipment,True
+96699,EOE,Voidforged Titan,uncommon,B,5,Artifact Creature - Robot Warrior,True
+96590,EOE,Exosuit Savior,common,W,3,Creature - Human Soldier,True
+96682,EOE,Insatiable Skittermaw,common,B,3,Creature - Insect Horror,True
+96587,EOE,Dual-Sun Technique,uncommon,W,2,Instant,True
+96611,EOE,Starfield Shepherd,uncommon,W,5,Creature - Angel,True
+96828,EOE,Godless Shrine,rare,BW,0,Land - Plains Swamp,True
+96773,EOE,Meltstrider's Resolve,uncommon,G,1,Enchantment - Aura,True
+96722,EOE,Nova Hellkite,rare,R,5,Creature - Dragon,True
+96812,EOE,"Dawnsire, Sunstar Dreadnought",mythic,,5,Legendary Artifact - Spacecraft,True
+96769,EOE,Lashwhip Predator,uncommon,G,6,Creature - Plant Beast,True
+96791,EOE,Genemorph Imago,rare,GU,2,Creature - Insect Druid,True
+96575,EOE,Anticausal Vestige,rare,,6,Creature - Eldrazi,True
+96838,EOE,Island,basic,U,0,Basic Land - Island,True
+96781,EOE,Skystinger,common,G,3,Creature - Insect Warrior,True
+96657,EOE,Unravel,uncommon,U,3,Instant,True
+96834,EOE,"Uthros, Titanic Godcore",mythic,U,0,Land - Planet,True
+96775,EOE,Ouroboroid,mythic,G,4,Creature - Plant Wurm,True
+96668,EOE,Decode Transmissions,common,B,3,Sorcery,True
+96819,EOE,Survey Mechan,uncommon,,4,Artifact Creature - Robot,True
+96602,EOE,Pulsar Squadron Ace,uncommon,W,2,Creature - Human Pilot,True
+96746,EOE,Bioengineered Future,rare,G,3,Enchantment,True
+96790,EOE,"Dyadrine, Synthesis Amalgam",rare,GW,2,Legendary Artifact Creature - Construct,True
+96645,EOE,Nanoform Sentinel,common,U,3,Artifact Creature - Robot,True
+96818,EOE,Pinnacle Kill-Ship,common,,7,Artifact - Spacecraft,True
+96674,EOE,Faller's Faithful,uncommon,B,3,Creature - Human Wizard,True
+96688,EOE,Scrounge for Eternity,uncommon,B,3,Sorcery,True
+96672,EOE,Embrace Oblivion,common,B,1,Sorcery,True
+96824,EOE,"Adagia, Windswept Bastion",mythic,W,0,Land - Planet,True
+96685,EOE,Monoist Sentry,uncommon,B,1,Artifact Creature - Robot,True
+96594,EOE,Hardlight Containment,rare,W,1,Enchantment - Aura,True
+96749,EOE,Broodguard Elite,uncommon,G,2,Creature - Insect Knight,True
+96666,EOE,Comet Crawler,common,B,3,Creature - Insect Horror,True
+96730,EOE,Rig for War,common,R,2,Instant,True
+96608,EOE,Seam Rip,uncommon,W,1,Enchantment,True
+96681,EOE,Hymn of the Faller,uncommon,B,2,Sorcery,True
+96720,EOE,Molecular Modifier,uncommon,R,3,Creature - Kavu Artificer,True
+96786,EOE,"Alpharael, Dreaming Acolyte",uncommon,BU,3,Legendary Creature - Human Cleric,True
+96830,EOE,Sacred Foundry,rare,RW,0,Land - Mountain Plains,True
+96709,EOE,Full Bore,uncommon,R,1,Instant,True
+96760,EOE,Gene Pollinator,common,G,1,Artifact Creature - Robot Insect,True
+96737,EOE,Terminal Velocity,rare,R,6,Sorcery,True
+96604,EOE,Rayblade Trooper,uncommon,W,3,Creature - Human Soldier,True
+96823,EOE,Wurmwall Sweeper,common,,2,Artifact - Spacecraft,True
+96588,EOE,Emergency Eject,uncommon,W,3,Instant,True
+96694,EOE,Temporal Intervention,common,B,3,Sorcery,True
+96577,EOE,All-Fates Stalker,uncommon,W,4,Creature - Drix Assassin,True
+96664,EOE,Blade of the Swarm,uncommon,B,4,Creature - Insect Assassin,True
+96696,EOE,Tragic Trajectory,uncommon,B,1,Sorcery,True
+96612,EOE,Starfighter Pilot,common,W,2,Creature - Human Pilot,True
+96616,EOE,Sunstar Lightsmith,uncommon,W,4,Creature - Human Artificer,True
+96732,EOE,Ruinous Rampage,uncommon,R,3,Sorcery,True
+96641,EOE,Mental Modulation,common,U,2,Instant,True
+96776,EOE,Pull Through the Weft,uncommon,G,5,Sorcery,True
+96806,EOE,"Syr Vondam, the Lucent",uncommon,BW,5,Legendary Creature - Human Knight,True
+96615,EOE,Sunstar Expansionist,uncommon,W,2,Creature - Human Knight,True
+96585,EOE,Dockworker Drone,common,W,2,Artifact Creature - Robot,True
+96736,EOE,"Tannuk, Steadfast Second",mythic,R,4,Legendary Creature - Kavu Pilot,True
+96663,EOE,Beamsaw Prospector,common,B,2,Creature - Human Artificer,True
+96827,EOE,"Evendo, Waking Haven",mythic,G,0,Land - Planet,True
+96842,EOE,Mountain,basic,R,0,Basic Land - Mountain,True
+96633,EOE,Illvoi Infiltrator,uncommon,U,3,Creature - Jellyfish Rogue,True
+96629,EOE,Divert Disaster,common,U,2,Instant,True
+96589,EOE,Exalted Sunborn,mythic,W,5,Creature - Angel Wizard,True
+96802,EOE,Singularity Rupture,rare,BU,6,Sorcery,True
+96725,EOE,Pain for All,rare,R,3,Enchantment - Aura,True
+96757,EOE,Frenzied Baloth,rare,G,2,Creature - Beast,True
+96651,EOE,Starbreach Whale,common,U,5,Creature - Whale,True
+96748,EOE,Blooming Stinger,common,G,2,Creature - Plant Scorpion,True
+96613,EOE,Starport Security,common,W,1,Artifact Creature - Robot Soldier,True
+96619,EOE,Zealous Display,common,W,3,Instant,True
+96710,EOE,Galvanizing Sawship,uncommon,R,6,Artifact - Spacecraft,True
+96835,EOE,Watery Grave,rare,BU,0,Land - Island Swamp,True
+96798,EOE,"Ragost, Deft Gastronaut",rare,RW,2,Legendary Creature - Lobster Citizen,True
+96821,EOE,Thrumming Hivepool,rare,,6,Artifact,True
+96601,EOE,Pinnacle Starcage,rare,W,3,Artifact,True
+96643,EOE,Moonlit Meditation,rare,U,3,Enchantment - Aura,True
+96609,EOE,The Seriema,rare,W,3,Legendary Artifact - Spacecraft,True
+96628,EOE,Desculpting Blast,uncommon,U,2,Instant,True
+96800,EOE,"Sami, Wildcat Captain",mythic,RW,6,Legendary Creature - Human Artificer Rogue,True
+96701,EOE,"Xu-Ifit, Osteoharmonist",rare,B,3,Legendary Creature - Human Wizard,True
+96695,EOE,Timeline Culler,uncommon,B,2,Creature - Drix Warlock,True
+96698,EOE,Virus Beetle,common,B,2,Artifact Creature - Insect,True
+96826,EOE,Command Bridge,common,,0,Land,True
+96591,EOE,Flight-Deck Coordinator,common,W,3,Creature - Human Soldier,True
+96785,EOE,Thawbringer,common,G,3,Creature - Insect Scout,True
+96777,EOE,Sami's Curiosity,common,G,1,Sorcery,True
+96653,EOE,Starwinder,rare,U,7,Creature - Leviathan,True
+96844,EOE,Forest,basic,G,0,Basic Land - Forest,True
+96721,EOE,Nebula Dragon,common,R,7,Creature - Dragon,True
+96579,EOE,Auxiliary Boosters,common,W,5,Artifact - Equipment,True
+96731,EOE,Roving Actuator,uncommon,R,4,Artifact Creature - Robot,True
+96813,EOE,The Dominion Bracelet,mythic,,2,Legendary Artifact - Equipment,True
+96707,EOE,Drill Too Deep,common,R,2,Instant,True
+96671,EOE,Elegy Acolyte,rare,B,4,Creature - Human Cleric,True
+96727,EOE,Possibility Technician,rare,R,3,Creature - Kavu Artificer,True
+96632,EOE,Illvoi Galeblade,common,U,1,Creature - Jellyfish Warrior,True
+96654,EOE,Steelswarm Operator,uncommon,U,2,Artifact Creature - Robot Soldier,True
+96598,EOE,Lightstall Inquisitor,rare,W,1,Creature - Angel Wizard,True
+96658,EOE,Uthros Psionicist,uncommon,U,3,Creature - Jellyfish Scientist,True
+96637,EOE,Mechan Assembler,uncommon,U,5,Artifact Creature - Robot Artificer,True
+96761,EOE,Germinating Wurm,common,G,5,Creature - Plant Wurm,True
+96751,EOE,Diplomatic Relations,common,G,3,Instant,True
+96803,EOE,Space-Time Anomaly,rare,UW,4,Sorcery,True
+96607,EOE,Scout for Survivors,uncommon,W,3,Sorcery,True
+96822,EOE,Virulent Silencer,uncommon,,3,Artifact Creature - Robot Assassin,True
+96799,EOE,"Sami, Ship's Engineer",uncommon,RW,4,Legendary Creature - Human Artificer,True
+96593,EOE,"Haliya, Guided by Light",rare,W,3,Legendary Creature - Human Soldier,True
+96624,EOE,Codecracker Hound,uncommon,U,3,Creature - Dog,True
+96807,EOE,"Tannuk, Memorial Ensign",uncommon,GR,3,Legendary Creature - Kavu Pilot,True
+96782,EOE,Sledge-Class Seedship,rare,G,3,Artifact - Spacecraft,True
+96610,EOE,Squire's Lightblade,common,W,1,Artifact - Equipment,True
+96770,EOE,Loading Zone,rare,G,4,Enchantment,True
+96582,EOE,Brightspear Zealot,common,W,3,Creature - Human Soldier,True
+96801,EOE,Seedship Broodtender,uncommon,BG,2,Creature - Insect Citizen,True
+96661,EOE,"Alpharael, Stonechosen",mythic,B,5,Legendary Creature - Human Cleric,True
+96706,EOE,Devastating Onslaught,mythic,R,1,Sorcery,True
+96662,EOE,Archenemy's Charm,rare,B,3,Instant,True
+96675,EOE,Fell Gravship,uncommon,B,3,Artifact - Spacecraft,True
+96626,EOE,Cryogen Relic,common,U,2,Artifact,True
+96796,EOE,Mutinous Massacre,rare,BR,7,Sorcery,True
+96635,EOE,Illvoi Operative,common,U,2,Creature - Jellyfish Rogue,True
+96739,EOE,Territorial Bruntar,uncommon,R,6,Creature - Beast,True
+96586,EOE,Dual-Sun Adepts,uncommon,W,3,Creature - Human Soldier,True
+96772,EOE,Meltstrider's Gear,common,G,1,Artifact - Equipment,True
+96630,EOE,Emissary Escort,rare,U,2,Artifact Creature - Robot Soldier,True
+96718,EOE,Memorial Team Leader,uncommon,R,4,Creature - Kavu Soldier,True
+96655,EOE,Synthesizer Labship,rare,U,1,Artifact - Spacecraft,True
+96712,EOE,Kav Landseeker,common,R,4,Creature - Kavu Soldier,True
+96620,EOE,Annul,uncommon,U,1,Instant,True
+96833,EOE,"Susur Secundi, Void Altar",mythic,B,0,Land - Planet,True
+96595,EOE,Honor,uncommon,W,1,Sorcery,True
+96808,EOE,All-Fates Scroll,uncommon,,3,Artifact,True
+96738,EOE,Terrapact Intimidator,uncommon,R,2,Creature - Kavu Scout,True
+96752,EOE,Drix Fatemaker,common,G,4,Creature - Drix Wizard,True
+96787,EOE,Biomechan Engineer,uncommon,GU,2,Creature - Insect Artificer,True
+96670,EOE,Dubious Delicacy,uncommon,B,3,Artifact - Food,True
+96767,EOE,Intrepid Tenderfoot,common,G,2,Creature - Insect Citizen,True
+96599,EOE,Lumen-Class Frigate,rare,W,2,Artifact - Spacecraft,True
+96673,EOE,Entropic Battlecruiser,rare,B,4,Artifact - Spacecraft,True
+96768,EOE,Larval Scoutlander,uncommon,G,3,Artifact - Spacecraft,True
+96642,EOE,"Mm'menon, the Right Hand",rare,U,5,Legendary Creature - Jellyfish Advisor,True
+96793,EOE,Infinite Guideline Station,rare,BGRUW,5,Legendary Artifact - Spacecraft,True
+96805,EOE,"Syr Vondam, Sunstar Exemplar",rare,BW,2,Legendary Creature - Human Knight,True
+96618,EOE,Weftblade Enhancer,common,W,6,Creature - Drix Artificer,True
+96680,EOE,Hylderblade,uncommon,B,1,Artifact - Equipment,True
+96640,EOE,Mechanozoa,common,U,6,Artifact Creature - Robot Jellyfish,True
+96795,EOE,"Mm'menon, Uthros Exile",uncommon,RU,3,Legendary Creature - Jellyfish Advisor,True
+96627,EOE,Cryoshatter,common,U,1,Enchantment - Aura,True
+96815,EOE,The Eternity Elevator,rare,,5,Legendary Artifact - Spacecraft,True
+96764,EOE,Hemosymbic Mite,uncommon,G,1,Creature - Mite,True
+96715,EOE,Kavaron Turbodrone,common,R,3,Artifact Creature - Robot Scout,True
+96693,EOE,Swarm Culler,common,B,4,Creature - Insect Warrior,True
+96733,EOE,Rust Harvester,rare,R,1,Artifact Creature - Robot,True
+97103,EOS,Bonders' Enclave,rare,,0,Land,True
+97138,EOS,Stirring Wildwood,rare,GW,0,Land,True
+97144,EOS,Wandering Fumarole,rare,RU,0,Land,True
+97120,EOS,Inventors' Fair,mythic,,0,Legendary Land,True
+97131,EOS,Petrified Field,mythic,,0,Land,True
+97129,EOS,Needle Spires,rare,RW,0,Land,True
+97132,EOS,Plaza of Heroes,mythic,,0,Land,True
+97134,EOS,Raging Ravine,rare,GR,0,Land,True
+97113,EOS,Eldrazi Temple,rare,,0,Land,True
+97130,EOS,Nesting Grounds,rare,,0,Land,True
+97115,EOS,Gemstone Caverns,mythic,,0,Legendary Land,True
+97112,EOS,Echoing Deeps,rare,,0,Land - Cave,True
+97117,EOS,High Market,rare,,0,Land,True
+97136,EOS,Scavenger Grounds,rare,,0,Land - Desert,True
+97118,EOS,Hissing Quagmire,rare,BG,0,Land,True
+97102,EOS,Blinkmoth Nexus,rare,,0,Land,True
+97124,EOS,Mana Confluence,mythic,,0,Land,True
+97139,EOS,Strip Mine,mythic,,0,Land,True
+97137,EOS,Shambling Vent,rare,BW,0,Land,True
+97116,EOS,Grove of the Burnwillows,mythic,GR,0,Land,True
+97141,EOS,Swarmyard,rare,,0,Land,True
+97122,EOS,Lotus Field,mythic,,0,Land,True
+97142,EOS,Terrain Generator,rare,,0,Land,True
+97100,EOS,Ancient Tomb,mythic,,0,Land,True
+97135,EOS,Reflecting Pool,mythic,,0,Land,True
+97101,EOS,Blast Zone,rare,,0,Land,True
+97107,EOS,Contested War Zone,rare,,0,Land,True
+97104,EOS,Cascading Cataracts,rare,,0,Land,True
+97143,EOS,Thespian's Stage,rare,,0,Land,True
+97140,EOS,Sunken Citadel,rare,,0,Land - Cave,True
+97110,EOS,Deserted Temple,mythic,,0,Land,True
+97128,EOS,Mystifying Maze,rare,,0,Land,True
+97127,EOS,Mutavault,mythic,,0,Land,True
+97105,EOS,Cathedral of War,rare,,0,Land,True
+97109,EOS,Crystal Quarry,rare,BGRUW,0,Land,True
+97114,EOS,Endless Sands,rare,,0,Land - Desert,True
+97119,EOS,Inkmoth Nexus,mythic,,0,Land,True
+97123,EOS,Lumbering Falls,rare,GU,0,Land,True
+97121,EOS,Lavaclaw Reaches,rare,BR,0,Land,True
+97106,EOS,Celestial Colonnade,rare,UW,0,Land,True
+97111,EOS,Dust Bowl,mythic,,0,Land,True
+97133,EOS,Power Depot,rare,,0,Artifact Land,True
+97125,EOS,Meteor Crater,rare,,0,Land,True
+97108,EOS,Creeping Tar Pit,rare,BU,0,Land,True
+97126,EOS,Mirrorpool,mythic,,0,Land,True
+96857,SPG,Deafening Silence,uncommon,W,1,Enchantment,True
+96865,SPG,Sliver Overlord,mythic,BGRUW,5,Legendary Creature - Sliver Mutant,True
+96864,SPG,Green Sun's Zenith,rare,G,1,Sorcery,True
+96859,SPG,Nexus of Fate,mythic,U,7,Instant,True
+96861,SPG,Darkness,common,B,1,Instant,True
+96858,SPG,Robe of Stars,rare,W,2,Artifact - Equipment,True
+96856,SPG,Warping Wail,uncommon,,2,Instant,True
+96860,SPG,Paradox Haze,uncommon,U,3,Enchantment - Aura,True
+96837,EOE,Plains,basic,W,0,Basic Land - Plains,False
+97168,EOE,Plains,basic,W,0,Basic Land - Plains,False
+97170,EOE,Swamp,basic,B,0,Basic Land - Swamp,False
+96839,EOE,Island,basic,U,0,Basic Land - Island,False
+96841,EOE,Swamp,basic,B,0,Basic Land - Swamp,False
+96843,EOE,Mountain,basic,R,0,Basic Land - Mountain,False
+97169,EOE,Island,basic,U,0,Basic Land - Island,False
+97172,EOE,Forest,basic,G,0,Basic Land - Forest,False
+97171,EOE,Mountain,basic,R,0,Basic Land - Mountain,False
+96845,EOE,Forest,basic,G,0,Basic Land - Forest,False
+97173,EOE,"Tezzeret, Cruel Captain",mythic,,3,Legendary Planeswalker - Tezzeret,False
+97174,EOE,Astelli Reclaimer,rare,W,5,Creature - Angel Warrior,False
+97175,EOE,"Haliya, Guided by Light",rare,W,3,Legendary Creature - Human Soldier,False
+97176,EOE,"Mm'menon, the Right Hand",rare,U,5,Legendary Creature - Jellyfish Advisor,False
+97177,EOE,Starwinder,rare,U,7,Creature - Leviathan,False
+97178,EOE,"Alpharael, Stonechosen",mythic,B,5,Legendary Creature - Human Cleric,False
+97179,EOE,Elegy Acolyte,rare,B,4,Creature - Human Cleric,False
+97180,EOE,"Xu-Ifit, Osteoharmonist",rare,B,3,Legendary Creature - Human Wizard,False
+97181,EOE,Possibility Technician,rare,R,3,Creature - Kavu Artificer,False
+97182,EOE,"Tannuk, Steadfast Second",mythic,R,4,Legendary Creature - Kavu Pilot,False
+97183,EOE,Mightform Harmonizer,rare,G,4,Creature - Insect Druid,False
+97184,EOE,"Dyadrine, Synthesis Amalgam",rare,GW,2,Legendary Artifact Creature - Construct,False
+97185,EOE,Genemorph Imago,rare,GU,2,Creature - Insect Druid,False
+97186,EOE,"Ragost, Deft Gastronaut",rare,RW,2,Legendary Creature - Lobster Citizen,False
+97187,EOE,"Sami, Wildcat Captain",mythic,RW,6,Legendary Creature - Human Artificer Rogue,False
+97188,EOE,"Syr Vondam, Sunstar Exemplar",rare,BW,2,Legendary Creature - Human Knight,False
+97189,EOE,Beyond the Quiet,rare,W,5,Sorcery,False
+97190,EOE,Cosmogrand Zenith,mythic,W,3,Creature - Human Soldier,False
+97191,EOE,Quantum Riddler,mythic,U,5,Creature - Sphinx,False
+97192,EOE,Starwinder,rare,U,7,Creature - Leviathan,False
+97193,EOE,Archenemy's Charm,rare,B,3,Instant,False
+97194,EOE,Devastating Onslaught,mythic,R,1,Sorcery,False
+97195,EOE,Nova Hellkite,rare,R,5,Creature - Dragon,False
+97196,EOE,Rust Harvester,rare,R,1,Artifact Creature - Robot,False
+97197,EOE,Weapons Manufacturing,rare,R,2,Enchantment,False
+97198,EOE,Terrasymbiosis,rare,G,3,Enchantment,False
+97199,EOE,Cosmogoyf,rare,BG,2,Creature - Elemental Lhurgoyf,False
+97200,EOE,Mutinous Massacre,rare,BR,7,Sorcery,False
+97201,EOE,Space-Time Anomaly,rare,UW,4,Sorcery,False
+97202,EOE,Secluded Starforge,rare,,0,Land,False
+97203,EOE,Singularity Rupture,rare,BU,6,Sorcery,False
+97204,EOE,Anticausal Vestige,mythic,,6,Creature - Eldrazi,False
+97205,EOE,Exalted Sunborn,mythic,W,5,Creature - Angel Wizard,False
+97206,EOE,Starfield Vocalist,mythic,U,4,Creature - Human Bard,False
+97207,EOE,"Sothera, the Supervoid",mythic,B,4,Legendary Enchantment,False
+97208,EOE,Devastating Onslaught,mythic,R,1,Sorcery,False
+97209,EOE,Icetill Explorer,mythic,G,4,Creature - Insect Scout,False
+97210,EOE,Mutinous Massacre,mythic,BR,7,Sorcery,False
+97211,EOE,The Dominion Bracelet,mythic,,2,Legendary Artifact - Equipment,False
+97212,EOE,The Endstone,mythic,,7,Legendary Artifact,False
+97213,EOE,Secluded Starforge,mythic,,0,Land,False
+97214,EOE,"Adagia, Windswept Bastion",mythic,W,0,Land - Planet,False
+97215,EOE,Breeding Pool,rare,GU,0,Land - Forest Island,False
+97216,EOE,"Evendo, Waking Haven",mythic,G,0,Land - Planet,False
+97217,EOE,Godless Shrine,rare,BW,0,Land - Plains Swamp,False
+97218,EOE,"Kavaron, Memorial World",mythic,R,0,Land - Planet,False
+97219,EOE,Sacred Foundry,rare,RW,0,Land - Mountain Plains,False
+97220,EOE,Stomping Ground,rare,GR,0,Land - Mountain Forest,False
+97221,EOE,"Susur Secundi, Void Altar",mythic,B,0,Land - Planet,False
+97222,EOE,"Uthros, Titanic Godcore",mythic,U,0,Land - Planet,False
+97223,EOE,Watery Grave,rare,BU,0,Land - Island Swamp,False
+96846,TEOE,Sliver,token,,0,Creature - Sliver,False
+96847,TEOE,Human Soldier,token,,0,Creature - Human Soldier,False
+96848,TEOE,Drone,token,,0,Artifact Creature - Drone,False
+96849,TEOE,Lander,token,,0,Artifact - Lander,False
+96850,TEOE,Lander,token,,0,Artifact - Lander,False
+96851,TEOE,Lander,token,,0,Artifact - Lander,False
+96852,TEOE,Lander,token,,0,Artifact - Lander,False
+96853,TEOE,Lander,token,,0,Artifact - Lander,False
+96854,TEOE,Munitions,token,,0,Artifact,False
+96855,TEOE,Robot,token,,0,Artifact Creature - Robot,False
+97224,EOS,Ancient Tomb,mythic,,0,Land,False
+97225,EOS,Blast Zone,rare,,0,Land,False
+97226,EOS,Blinkmoth Nexus,rare,,0,Land,False
+97227,EOS,Bonders' Enclave,rare,,0,Land,False
+97228,EOS,Cascading Cataracts,rare,,0,Land,False
+97229,EOS,Cathedral of War,rare,,0,Land,False
+97230,EOS,Celestial Colonnade,rare,UW,0,Land,False
+97231,EOS,Contested War Zone,rare,,0,Land,False
+97232,EOS,Creeping Tar Pit,rare,BU,0,Land,False
+97233,EOS,Crystal Quarry,rare,BGRUW,0,Land,False
+97234,EOS,Deserted Temple,mythic,,0,Land,False
+97235,EOS,Dust Bowl,mythic,,0,Land,False
+97236,EOS,Echoing Deeps,rare,,0,Land - Cave,False
+97237,EOS,Eldrazi Temple,rare,,0,Land,False
+97238,EOS,Endless Sands,rare,,0,Land - Desert,False
+97239,EOS,Gemstone Caverns,mythic,,0,Legendary Land,False
+97240,EOS,Grove of the Burnwillows,mythic,GR,0,Land,False
+97241,EOS,High Market,rare,,0,Land,False
+97242,EOS,Hissing Quagmire,rare,BG,0,Land,False
+97243,EOS,Inkmoth Nexus,mythic,,0,Land,False
+97244,EOS,Inventors' Fair,mythic,,0,Legendary Land,False
+97245,EOS,Lavaclaw Reaches,rare,BR,0,Land,False
+97246,EOS,Lotus Field,mythic,,0,Land,False
+97247,EOS,Lumbering Falls,rare,GU,0,Land,False
+97248,EOS,Mana Confluence,mythic,,0,Land,False
+97249,EOS,Meteor Crater,rare,,0,Land,False
+97250,EOS,Mirrorpool,mythic,,0,Land,False
+97251,EOS,Mutavault,mythic,,0,Land,False
+97252,EOS,Mystifying Maze,rare,,0,Land,False
+97253,EOS,Needle Spires,rare,RW,0,Land,False
+97254,EOS,Nesting Grounds,rare,,0,Land,False
+97255,EOS,Petrified Field,mythic,,0,Land,False
+97256,EOS,Plaza of Heroes,mythic,,0,Land,False
+97257,EOS,Power Depot,rare,,0,Artifact Land,False
+97258,EOS,Raging Ravine,rare,GR,0,Land,False
+97259,EOS,Reflecting Pool,mythic,,0,Land,False
+97260,EOS,Scavenger Grounds,rare,,0,Land - Desert,False
+97261,EOS,Shambling Vent,rare,BW,0,Land,False
+97262,EOS,Stirring Wildwood,rare,GW,0,Land,False
+97263,EOS,Strip Mine,mythic,,0,Land,False
+97264,EOS,Sunken Citadel,rare,,0,Land - Cave,False
+97265,EOS,Swarmyard,rare,,0,Land,False
+97266,EOS,Terrain Generator,rare,,0,Land,False
+97267,EOS,Thespian's Stage,rare,,0,Land,False
+97268,EOS,Wandering Fumarole,rare,RU,0,Land,False
+97272,EOC,"Szarel, Genesis Shepherd",mythic,BGR,5,Legendary Creature - Insect Druid,False
+97269,EOC,"Hearthhull, the Worldseed",mythic,BGR,4,Legendary Artifact - Spacecraft,False
+97271,EOC,"Kilo, Apogee Mind",mythic,RUW,3,Legendary Artifact Creature - Robot Artificer,False
+97270,EOC,"Inspirit, Flagship Vessel",mythic,RUW,3,Legendary Artifact - Spacecraft,False
+96862,SPG,Magus of the Moon,rare,R,3,Creature - Human Wizard,True
+97273,TSPG,Eldrazi Scion,token,,0,Creature - Eldrazi Scion,False
+100112,Y25,Clifftop Retreat,rare,RW,0,Land,False
+100113,Y25,Dragonskull Summit,rare,BR,0,Land,False
+100114,Y25,Drowned Catacomb,rare,BU,0,Land,False
+100115,Y25,Glacial Fortress,rare,UW,0,Land,False
+100116,Y25,Hinterland Harbor,rare,GU,0,Land,False
+100117,Y25,Isolated Chapel,rare,BW,0,Land,False
+100118,Y25,Rootbound Crag,rare,GR,0,Land,False
+100119,Y25,Sulfur Falls,rare,RU,0,Land,False
+100120,Y25,Sunpetal Grove,rare,GW,0,Land,False
+100121,Y25,Woodland Cemetery,rare,BG,0,Land,False
+96863,SPG,Burgeoning,rare,G,1,Enchantment,True

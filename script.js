@@ -15,7 +15,7 @@ class DraftingAssistant {
         };
         
         // Available sets that have Premier Draft models
-        this.availableSetModels = ['FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        this.availableSetModels = ['EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSetModels:', this.availableSetModels);
         
         // Don't initialize here - wait for DOM ready
@@ -210,7 +210,7 @@ class DraftingAssistant {
         console.log('loadAvailableSets called');
         // Order sets chronologically from newest to oldest (as provided by user)
         const setOrder = [
-            'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 
+            'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 
             'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 
             'DMU'
         ];
