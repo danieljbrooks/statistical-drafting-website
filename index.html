@@ -44,13 +44,59 @@
     gtag('js', new Date());
 
     gtag('config', 'G-Z9RVWTEH15');
+    
+    // Enhanced tracking for Draft Assistant page
+    gtag('event', 'page_view', {
+        'page_title': 'Statistical Drafting - Draft Assistant',
+        'page_location': '/',
+        'custom_map': {
+            'dimension1': 'page_type',
+            'dimension2': 'content_category'
+        }
+    });
+    
+    // Track time on site
+    let startTime = Date.now();
+    let maxScrollDepth = 0;
+    
+    // Track scroll depth
+    window.addEventListener('scroll', () => {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScrollDepth) {
+            maxScrollDepth = scrollPercent;
+        }
+    });
+    
+    // Track page exit and time spent
+    window.addEventListener('beforeunload', () => {
+        const timeSpent = Math.round((Date.now() - startTime) / 1000);
+        gtag('event', 'draft_assistant_time_spent', {
+            'event_category': 'Draft Assistant',
+            'value': timeSpent,
+            'custom_parameter': 'seconds',
+            'scroll_depth': maxScrollDepth
+        });
+    });
+    
+    // Track when user starts using the tool
+    document.addEventListener('DOMContentLoaded', () => {
+        gtag('event', 'draft_assistant_page_loaded', {
+            'event_category': 'Draft Assistant',
+            'event_label': 'Page Loaded'
+        });
+    });
     </script>
 </head>
 <body>
     <div class="container">
         <header>
+            <nav class="main-nav subtle-nav">
+                <a href="index.html" class="nav-link active">Draft Assistant</a>
+                <a href="about.html" class="nav-link">About</a>
+            </nav>
+            
             <h1>Statistical Drafting</h1>
-            <p>Pick orders trained on 17Lands data — more details on <a href="https://github.com/danieljbrooks/statistical-drafting" target="_blank">GitHub</a></p>
+            <p>Pick orders trained on 17Lands data</p>
             
             <div class="top-controls">
                 <div class="control-section">

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>About - Statistical Drafting - Magic: The Gathering Draft Helper</title>
+    <meta name="description" content="Learn about Statistical Drafting, an AI-powered Magic: The Gathering draft assistant using 17Lands data to provide expert pick orders and draft guidance.">
+    <meta name="keywords" content="Magic the Gathering, MTG, Draft, Draft Assistant, statistical drafting, 17Lands, about, methodology, AI, machine learning, draft strategy">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://statisticaldrafting.com/about">
+    <meta property="og:title" content="About - Statistical Drafting - Magic: The Gathering Draft Helper">
+    <meta property="og:description" content="Learn about Statistical Drafting, an AI-powered Magic: The Gathering draft assistant using 17Lands data.">
+    <meta property="og:image" content="https://statisticaldrafting.com/favicon.svg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://statisticaldrafting.com/about">
+    <meta property="twitter:title" content="About - Statistical Drafting - Magic: The Gathering Draft Helper">
+    <meta property="twitter:description" content="Learn about Statistical Drafting, an AI-powered Magic: The Gathering draft assistant using 17Lands data.">
+    <meta property="twitter:image" content="https://statisticaldrafting.com/favicon.svg">
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9RVWTEH15"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Z9RVWTEH15');
+    
+    // Enhanced tracking for About page
+    gtag('event', 'page_view', {
+        'page_title': 'About Statistical Drafting',
+        'page_location': '/about',
+        'custom_map': {
+            'dimension1': 'page_type',
+            'dimension2': 'content_category'
+        }
+    });
+    
+    // Track time on site
+    let startTime = Date.now();
+    let maxScrollDepth = 0;
+    let sectionsViewed = new Set();
+    
+    // Track scroll depth
+    window.addEventListener('scroll', () => {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScrollDepth) {
+            maxScrollDepth = scrollPercent;
+        }
+        
+        // Track which sections are viewed
+        document.querySelectorAll('.about-section').forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                sectionsViewed.add(index);
+            }
+        });
+    });
+    
+    // Track page exit and time spent
+    window.addEventListener('beforeunload', () => {
+        const timeSpent = Math.round((Date.now() - startTime) / 1000);
+        gtag('event', 'about_page_time_spent', {
+            'event_category': 'About Page',
+            'value': timeSpent,
+            'custom_parameter': 'seconds',
+            'scroll_depth': maxScrollDepth,
+            'sections_viewed': sectionsViewed.size
+        });
+    });
+    
+    // Track when user starts reading
+    document.addEventListener('DOMContentLoaded', () => {
+        gtag('event', 'about_page_loaded', {
+            'event_category': 'About Page',
+            'event_label': 'Page Loaded'
+        });
+        
+        // Track section engagement
+        document.querySelectorAll('.about-section h2').forEach((header, index) => {
+            header.addEventListener('click', () => {
+                gtag('event', 'about_section_click', {
+                    'event_category': 'About Page',
+                    'event_label': header.textContent,
+                    'section_number': index + 1
+                });
+            });
+        });
+        
+        // Track external link clicks
+        document.querySelectorAll('a[href^="http"]').forEach(link => {
+            link.addEventListener('click', () => {
+                gtag('event', 'about_external_link_click', {
+                    'event_category': 'About Page',
+                    'event_label': link.href,
+                    'link_text': link.textContent
+                });
+            });
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="main-nav subtle-nav">
+                <a href="index.html" class="nav-link">Draft Assistant</a>
+                <a href="about.html" class="nav-link active">About</a>
+            </nav>
+            
+            <h1>About Statistical Drafting</h1>
+            <p>AI-powered draft assistance for Magic: The Gathering</p>
+        </header>
+        
+        <main class="about-content academic-style">
+            <section class="about-section">
+                <h2>About</h2>
+                <p>Statistical drafting is a draft assistant for Magic: the Gathering. It provides pick orders based on your current deck, trained on top player data from 17lands.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Usage</h2>
+                <p>The rating column indicates the strength of a card on a 0-100 scale, with the synergy column showing an adjustment for your current deck.</p>
+                <p>Cards can be stored in a temporary pack with the compare button. Picking a card adds it to your deck.</p>
+                <p>The find card button can be used to search for cards by name.</p>
+                <p>There are various filters at the top of the page, similar to card data page on <a href="https://www.17lands.com/card_data" target="_blank">17lands</a>.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Project Goals</h2>
+                <p>The goal of this project is to provide the drafting community with high quality pick orders.</p>
+                <p>This is enabled by the <a href="https://www.17lands.com/public_datasets" target="_blank">draft datasets</a> provided by 17lands, which contain draft pick decisions and anonymized player information.</p>
+                <p>This data is filtered down to high volume and win rate players in order to describe the top player metagame.</p>
+                <p>New models can be released no earlier than 2 weeks after a set is released on MTG Arena, due to the current data release schedule on 17lands.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Interpreting Rating</h2>
+                <p>A card's rating can be thought of as "how good would an expert player value this card in my current archetype"?</p>
+                <p>In pack 1, picking the highest rated card is generally a good strategy.</p>
+                <p>In packs 2 and 3, sometimes it's correct to take a lower rated card for curve or deck composition considerations.</p>
+                <p>Despite extensive experiments, learning deck composition from drafting data alone is challenging.</p>
+                <p>A promising future direction could be to train a separate deck-building model and use it to apply a deck adjustment to later picks (in addition to synergy).</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Model Training & Deployment</h2>
+                <p>The model pick order model is a small neural network (MLP) trained in PyTorch.</p>
+                <p>This neural net takes a collection vector and a pack vector as input and outputs a card rating vector.</p>
+                <p>During training, the pack vector is used as a mask to zero out the ratings for cards not in the pack.</p>
+                <p>During inference, a ones vector is used as the pack vector to show the ratings for all cards in the set.</p>
+                <p>BatchNorm and dropout layers were added to ensure smooth optimizer convergence, as well as an exponentially decaying learning rate.</p>
+                <p>The typical premier draft model takes ~20 minutes to train for 100-150 epochs on CPU.</p>
+                <p>For a typical set, ~70% of model-predicted picks agree with the top-player picks.</p>
+                <p>For deployment, the models weights are exported to ONNX and run client side in the browser.</p>
+                <p>Full details are available on Github in the <a href="https://github.com/danieljbrooks/statistical-drafting/tree/main" target="_blank">model training</a> and <a href="https://github.com/danieljbrooks/statistical-drafting-website" target="_blank">front end</a> repos.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>References</h2>
+                <ol class="references-list">
+                    <li><a href="https://arxiv.org/abs/2009.00655" target="_blank">AI Solutions for Drafting in Magic: the Gathering</a> - model benchmark on Draftsim pick dataset</li>
+                    <li><a href="https://arxiv.org/abs/2105.11864" target="_blank">Predicting Human Card Selection in Magic: the Gathering with Contextual Preference Ranking</a> - neural nets with triplet loss on Draftsim dataset</li>
+                    <li><a href="https://github.com/RyanSaxe/mtg" target="_blank">Ryan Saxe draft AI</a> - used models trained on 17lands data to reach high Mythic</li>
+                </ol>
+            </section>
+
+            <section class="about-section">
+                <h2>Contact</h2>
+                <p>Contact: <a href="mailto:daniel.brooks@alumni.caltech.edu">daniel.brooks@alumni.caltech.edu</a></p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

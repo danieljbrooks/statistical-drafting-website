@@ -51,20 +51,20 @@ body {
 /* Header styling */
 header {
     background-color: var(--bg-secondary);
-    padding: 20px;
+    padding: 15px 20px;
     border-bottom: 1px solid var(--border-primary);
     margin-bottom: 20px;
 }
 
 header h1 {
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
     font-size: 2.2rem;
     color: var(--text-primary);
     font-weight: 700;
 }
 
 header p {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.5;
@@ -78,6 +78,60 @@ header p a {
 
 header p a:hover {
     text-decoration: underline;
+}
+
+/* Navigation styling */
+.main-nav {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-secondary);
+}
+
+.main-nav.subtle-nav {
+    margin-bottom: 8px;
+    padding: 4px 0;
+    border-bottom: none;
+    justify-content: flex-end;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.nav-link.active {
+    color: var(--accent-primary);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--accent-primary);
+}
+
+.subtle-nav .nav-link {
+    font-size: 0.9rem;
+    padding: 4px 10px;
+    color: var(--text-muted);
+}
+
+.subtle-nav .nav-link:hover {
+    color: var(--text-secondary);
+    background-color: transparent;
+}
+
+.subtle-nav .nav-link.active {
+    color: var(--accent-primary);
+    background-color: transparent;
+    border: none;
+    font-weight: 600;
 }
 
 /* Controls section - labels above selectors */
@@ -662,6 +716,19 @@ th {
         font-size: 1.5rem;
     }
     
+    /* Mobile navigation styling */
+    .main-nav {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .nav-link {
+        text-align: center;
+        padding: 12px 16px;
+        font-size: 1rem;
+    }
+    
     section {
         padding: 15px;
     }
@@ -719,6 +786,105 @@ th {
         font-size: 1rem;
         padding: 10px 12px;
     }
+    
+    /* Mobile about page styling */
+    .about-content {
+        padding: 15px;
+    }
+    
+    .about-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .about-section p {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    /* Mobile academic styling */
+    .about-content.academic-style {
+        padding: 15px;
+    }
+    
+    .abstract-section {
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .abstract-section h2 {
+        font-size: 1.4rem;
+    }
+    
+    .abstract-text {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .academic-style .about-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    .academic-style .about-section p {
+        font-size: 1rem;
+        text-align: left;
+        margin-bottom: 15px;
+    }
+    
+    .academic-references li {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        padding-left: 25px;
+    }
+    
+    /* Mobile clean styling */
+    .about-content.clean-style {
+        padding: 15px;
+    }
+    
+    .clean-style .about-section {
+        margin-bottom: 25px;
+    }
+    
+    .clean-style .about-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+    
+    .clean-style .about-section p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+    
+    .clean-style .references-list li {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+    
+    /* Mobile markdown styling */
+    .about-content.markdown-style {
+        padding: 15px;
+    }
+    
+    .markdown-style .about-section {
+        margin-bottom: 25px;
+    }
+    
+    .markdown-style .about-section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .markdown-style .about-section p {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+    
+    .markdown-style .references-list li {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
 }
 
 .filter-override-message {
@@ -765,4 +931,251 @@ th {
     outline: none;
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+
+/* About page styling */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.about-content.clean-style {
+    max-width: 900px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.about-content.academic-style {
+    max-width: 900px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.abstract-section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background-color: var(--bg-tertiary);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 0 8px 8px 0;
+}
+
+.abstract-section h2 {
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.abstract-text {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.about-section {
+    margin-bottom: 40px;
+}
+
+.clean-style .about-section {
+    margin-bottom: 35px;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.about-section h2 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-primary);
+}
+
+.clean-style .about-section h2 {
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.academic-style .about-section h2 {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 3px solid var(--accent-primary);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.about-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+.clean-style .about-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    font-size: 1rem;
+}
+
+.academic-style .about-section p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 18px;
+}
+
+.about-section a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.about-section a:hover {
+    text-decoration: underline;
+}
+
+.clean-style .about-section a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.clean-style .about-section a:hover {
+    text-decoration: underline;
+}
+
+/* Markdown-style rendering - completely clean, minimal styling */
+.about-content.markdown-style {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.markdown-style .about-section {
+    margin-bottom: 30px;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.markdown-style .about-section h2 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    padding: 0;
+    border: none;
+}
+
+.markdown-style .about-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+}
+
+.markdown-style .about-section a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.markdown-style .about-section a:hover {
+    text-decoration: underline;
+}
+
+.markdown-style .references-list {
+    margin: 0 0 0 20px;
+}
+
+.markdown-style .references-list li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.markdown-style .references-list a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.markdown-style .references-list a:hover {
+    text-decoration: underline;
+}
+
+.academic-references {
+    margin-left: 0;
+    counter-reset: reference-counter;
+}
+
+.academic-references li {
+    counter-increment: reference-counter;
+    list-style: none;
+    margin-bottom: 20px;
+    padding-left: 30px;
+    position: relative;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.academic-references li::before {
+    content: "[" counter(reference-counter) "]";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: var(--accent-primary);
+}
+
+.academic-references a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid var(--accent-primary);
+    padding-bottom: 1px;
+}
+
+.academic-references a:hover {
+    background-color: var(--accent-primary);
+    color: white;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 3px;
+}
+
+.references-list {
+    margin-left: 20px;
+}
+
+.clean-style .references-list {
+    margin-left: 0;
+}
+
+.references-list li {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.clean-style .references-list li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    list-style: decimal;
 }

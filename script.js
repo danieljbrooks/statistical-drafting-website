@@ -290,7 +290,21 @@ class DraftingAssistant {
     }
 
     async onSetChange(setName) {
-        if (!setName) return;
+        if (!setName) {
+            this.currentSet = null;
+            this.clearTable();
+            return;
+        }
+
+        // Track set selection
+        gtag('event', 'set_selected', {
+            'event_category': 'Draft Assistant',
+            'event_label': setName,
+            'value': 1
+        });
+
+        console.log('Loading set:', setName);
+        this.currentSet = setName;
 
         // Start new draft when changing sets
         this.collection = {};
@@ -567,10 +581,15 @@ class DraftingAssistant {
 
         const modal = document.getElementById('addCardModal');
         modal.style.display = 'block';
-        document.getElementById('cardSearch').value = '';
         
-        // Show initial cards (first 10 alphabetically) so users know what to type
-        this.showInitialCards();
+        // Track modal opened
+        gtag('event', 'find_card_modal_opened', {
+            'event_category': 'Draft Assistant',
+            'event_label': 'Find Card'
+        });
+        
+        // Focus on search input
+        document.getElementById('cardSearch').focus();
     }
 
     showInitialCards() {
@@ -686,6 +705,14 @@ class DraftingAssistant {
         } else {
             this.collection[cardName]++;
         }
+        
+        // Track card pick
+        gtag('event', 'card_picked', {
+            'event_category': 'Draft Assistant',
+            'event_label': cardName,
+            'set': this.currentSet,
+            'value': 1
+        });
         
         // Clear compare collection when deck changes
         this.compareCollection = {};
@@ -885,12 +912,17 @@ class DraftingAssistant {
     newDraft() {
         this.collection = {};
         this.compareCollection = {};
-        this.applyFilters();
-        
-        // Update tables
         this.updateDeckTable();
         this.updateCompareTable();
-        this.hideCompareSectionIfEmpty();
+        
+        // Track new draft started
+        gtag('event', 'new_draft_started', {
+            'event_category': 'Draft Assistant',
+            'event_label': 'New Draft',
+            'set': this.currentSet || 'None'
+        });
+        
+        console.log('New draft started');
     }
 
 
