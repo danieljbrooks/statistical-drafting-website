@@ -7,11 +7,11 @@ class DraftingAssistant {
         this.currentSet = null;
         this.onnxModel = null;
         
-        // Initialize filters
+        // Initialize filters with responsive default
         this.filters = {
             rarities: [],
             colors: [],
-            maxCards: '10'
+            maxCards: this.getDefaultMaxCards()
         };
         
         // Available sets that have Premier Draft models
@@ -19,6 +19,30 @@ class DraftingAssistant {
         console.log('Constructor complete, availableSetModels:', this.availableSetModels);
         
         // Don't initialize here - wait for DOM ready
+    }
+
+    // Add new method to get responsive default max cards
+    getDefaultMaxCards() {
+        if (window.innerWidth <= 768) {
+            return '10'; // Mobile and small screens
+        } else {
+            return 'all'; // Desktop and larger screens
+        }
+    }
+
+    // Add method to update max cards on window resize
+    handleResize() {
+        const maxCardsSelect = document.getElementById('maxCardsSelect');
+        if (maxCardsSelect) {
+            const newDefault = this.getDefaultMaxCards();
+            // Only change if current selection is 'all' (desktop default) or '10' (mobile default)
+            if ((maxCardsSelect.value === 'all' && newDefault === '10') || 
+                (maxCardsSelect.value === '10' && newDefault === 'all')) {
+                maxCardsSelect.value = newDefault;
+                this.filters.maxCards = newDefault;
+                this.applyFilters(); // Reapply filters with new value
+            }
+        }
     }
 
     async initializeEventListeners() {
@@ -55,6 +79,11 @@ class DraftingAssistant {
             this.searchCards(e.target.value);
         });
 
+        // Add window resize listener for responsive max cards
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+
         // Initialize filter listeners first
         this.initializeFilterListeners();
 
@@ -73,8 +102,13 @@ class DraftingAssistant {
         // Add event listener to max cards select
         const maxCardsSelect = document.getElementById('maxCardsSelect');
         if (maxCardsSelect) {
+            // Set initial value based on screen size
+            maxCardsSelect.value = this.getDefaultMaxCards();
+            this.filters.maxCards = maxCardsSelect.value;
+            
             maxCardsSelect.addEventListener('change', () => {
                 const maxCards = maxCardsSelect.value;
+                this.filters.maxCards = maxCards;
                 this.applyFilters();
             });
         }

@@ -712,6 +712,13 @@ th {
         width: 20px;
         height: 20px;
     }
+    
+    /* Mobile-specific max-cards-select styling */
+    .max-cards-select {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 12px;
+    }
 }
 
 .filter-override-message {
@@ -736,4 +743,26 @@ th {
 .filters input[type="checkbox"]:disabled + label {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Style for the max cards select dropdown */
+.max-cards-select {
+    padding: 8px 12px;
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.max-cards-select:hover {
+    border-color: var(--accent-primary);
+}
+
+.max-cards-select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
 }
