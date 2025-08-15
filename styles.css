@@ -241,14 +241,38 @@ header p a:hover {
 }
 
 .btn-secondary {
-    background-color: var(--accent-primary);
+    background-color: var(--accent-secondary);
     color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.btn-secondary:hover {
-    background-color: var(--accent-secondary);
+.btn-clear-deck {
+    background-color: var(--success);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-deck:hover {
+    background-color: #157347;
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-clear-deck:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .btn-compare {
@@ -700,6 +724,17 @@ th {
     color: var(--text-primary);
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.deck-controls {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-secondary);
+    text-align: center;
+}
+
+.deck-controls .btn {
+    margin: 0 auto;
 }
 
 /* Responsive design */

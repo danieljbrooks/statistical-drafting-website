@@ -57,7 +57,7 @@ class DraftingAssistant {
         });
 
         document.getElementById('newDraftBtn').addEventListener('click', () => {
-            this.newDraft();
+            this.clearDeck();
         });
 
         // Modal controls
@@ -757,6 +757,8 @@ class DraftingAssistant {
         
         // Update deck table
         this.updateDeckTable();
+        
+        // Note: addCardToCollection already handles changing button mode
     }
 
     updateCompareTable() {
@@ -909,25 +911,30 @@ class DraftingAssistant {
         this.applyFilters();
     }
 
-    newDraft() {
+    setClearDeckButtonMode(mode) {
+        const clearDeckBtn = document.getElementById('newDraftBtn');
+        if (clearDeckBtn) {
+            clearDeckBtn.textContent = mode === 'restore' ? 'Restore Deck' : 'Clear Deck';
+            clearDeckBtn.onclick = mode === 'restore' ? this.restoreDeck.bind(this) : this.clearDeck.bind(this);
+        }
+    }
+
+    clearDeck() {
+        // Clear current deck
         this.collection = {};
         this.compareCollection = {};
         this.updateDeckTable();
         this.updateCompareTable();
         
-        // Track new draft started
-        gtag('event', 'new_draft_started', {
+        // Track deck cleared
+        gtag('event', 'clear_deck_clicked', {
             'event_category': 'Draft Assistant',
-            'event_label': 'New Draft',
-            'set': this.currentSet || 'None'
+            'event_label': 'Clear Deck Clicked',
+            'cards_cleared': Object.keys(this.collection).length
         });
         
-        console.log('New draft started');
+        console.log('Deck cleared');
     }
-
-
-
-
 
     getRarityAbbreviation(rarity) {
         // Handle special rarity cards
