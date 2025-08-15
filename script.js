@@ -6,6 +6,8 @@ class DraftingAssistant {
         this.compareCollection = {};
         this.currentSet = null;
         this.onnxModel = null;
+        this.selectedSearchIndex = -1; // Track selected search result
+        this.currentSearchResults = []; // Store current search results for keyboard navigation
         
         // Initialize filters with responsive default
         this.filters = {
@@ -77,6 +79,11 @@ class DraftingAssistant {
 
         cardSearch.addEventListener('input', (e) => {
             this.searchCards(e.target.value);
+        });
+
+        // Add keyboard navigation for search results
+        cardSearch.addEventListener('keydown', (e) => {
+            this.handleSearchKeyboard(e);
         });
 
         // Add window resize listener for responsive max cards
@@ -582,6 +589,9 @@ class DraftingAssistant {
         const modal = document.getElementById('addCardModal');
         modal.style.display = 'block';
         
+        // Reset search selection when modal opens
+        this.selectedSearchIndex = -1;
+        
         // Track modal opened
         gtag('event', 'find_card_modal_opened', {
             'event_category': 'Draft Assistant',
@@ -597,6 +607,9 @@ class DraftingAssistant {
         const resultsContainer = document.getElementById('searchResults');
         resultsContainer.innerHTML = '';
 
+        // Reset selection when showing initial cards
+        this.selectedSearchIndex = -1;
+
         if (cardNames.length === 0) {
             resultsContainer.innerHTML = '<div class="search-result-item">No cards found in this set.</div>';
             return;
@@ -604,6 +617,12 @@ class DraftingAssistant {
 
         // Show all cards alphabetically (unaffected by filter)
         const initialCards = cardNames;
+        
+        // Store initial cards for keyboard navigation
+        this.currentSearchResults = initialCards.map(cardName => 
+            this.cardData.find(c => c.name === cardName)
+        );
+        
         initialCards.forEach(cardName => {
             const card = this.cardData.find(c => c.name === cardName);
             const item = document.createElement('div');
@@ -643,6 +662,9 @@ class DraftingAssistant {
     searchCards(query) {
         if (!this.cardData) return;
 
+        // Reset selection when search changes
+        this.selectedSearchIndex = -1;
+
         // If query is empty, show initial cards
         if (!query.trim()) {
             this.showInitialCards();
@@ -655,6 +677,9 @@ class DraftingAssistant {
 
         // Limit to 10 results
         results = results.slice(0, 10);
+        
+        // Store current results for keyboard navigation
+        this.currentSearchResults = results;
 
         const resultsContainer = document.getElementById('searchResults');
         resultsContainer.innerHTML = '';
@@ -962,6 +987,58 @@ class DraftingAssistant {
             return 'mythic';
         }
         return rarity.toLowerCase();
+    }
+
+    handleSearchKeyboard(event) {
+        const resultsContainer = document.getElementById('searchResults');
+        const searchItems = resultsContainer.querySelectorAll('.search-result-item');
+        
+        if (searchItems.length === 0) return;
+        
+        switch (event.key) {
+            case 'ArrowDown':
+                event.preventDefault();
+                this.selectedSearchIndex = Math.min(this.selectedSearchIndex + 1, searchItems.length - 1);
+                this.updateSearchSelection(searchItems);
+                break;
+                
+            case 'ArrowUp':
+                event.preventDefault();
+                this.selectedSearchIndex = Math.max(this.selectedSearchIndex - 1, 0);
+                this.updateSearchSelection(searchItems);
+                break;
+                
+            case 'Enter':
+                event.preventDefault();
+                if (this.selectedSearchIndex >= 0 && this.selectedSearchIndex < this.currentSearchResults.length) {
+                    const selectedCard = this.currentSearchResults[this.selectedSearchIndex];
+                    this.addCardToCompare(selectedCard.name);
+                    // Reset selection
+                    this.selectedSearchIndex = -1;
+                    this.updateSearchSelection(searchItems);
+                }
+                break;
+                
+            case 'Escape':
+                // Close modal on escape
+                document.getElementById('addCardModal').style.display = 'none';
+                this.selectedSearchIndex = -1;
+                break;
+        }
+    }
+
+    updateSearchSelection(searchItems) {
+        // Remove previous selection
+        searchItems.forEach(item => {
+            item.classList.remove('search-result-selected');
+        });
+        
+        // Add selection to current item
+        if (this.selectedSearchIndex >= 0 && this.selectedSearchIndex < searchItems.length) {
+            searchItems[this.selectedSearchIndex].classList.add('search-result-selected');
+            // Scroll into view if needed
+            searchItems[this.selectedSearchIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     }
 }
 

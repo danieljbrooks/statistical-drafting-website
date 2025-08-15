@@ -1214,3 +1214,28 @@ th {
     font-size: 1rem;
     list-style: decimal;
 }
+
+.search-result-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.search-result-item.search-result-selected {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.search-result-item.search-result-selected .card-name,
+.search-result-item.search-result-selected .card-rarity,
+.search-result-item.search-result-selected .card-rating {
+    color: white;
+}
+
+.search-result-item.search-result-selected .btn {
+    background-color: white;
+    color: var(--accent-primary);
+}
+
+.search-result-item.search-result-selected .btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--accent-primary);
+}
