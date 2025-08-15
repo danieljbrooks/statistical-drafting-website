@@ -13,7 +13,7 @@ class DraftingAssistant {
         this.filters = {
             rarities: [],
             colors: [],
-            maxCards: this.getDefaultMaxCards()
+            maxCards: this.getInitialDefaultMaxCards()
         };
         
         // Available sets that have Premier Draft models
@@ -23,27 +23,12 @@ class DraftingAssistant {
         // Don't initialize here - wait for DOM ready
     }
 
-    // Add new method to get responsive default max cards
-    getDefaultMaxCards() {
+    // Method to get initial default max cards (only used once during initialization)
+    getInitialDefaultMaxCards() {
         if (window.innerWidth <= 768) {
             return '10'; // Mobile and small screens
         } else {
             return 'all'; // Desktop and larger screens
-        }
-    }
-
-    // Add method to update max cards on window resize
-    handleResize() {
-        const maxCardsSelect = document.getElementById('maxCardsSelect');
-        if (maxCardsSelect) {
-            const newDefault = this.getDefaultMaxCards();
-            // Only change if current selection is 'all' (desktop default) or '10' (mobile default)
-            if ((maxCardsSelect.value === 'all' && newDefault === '10') || 
-                (maxCardsSelect.value === '10' && newDefault === 'all')) {
-                maxCardsSelect.value = newDefault;
-                this.filters.maxCards = newDefault;
-                this.applyFilters(); // Reapply filters with new value
-            }
         }
     }
 
@@ -86,10 +71,7 @@ class DraftingAssistant {
             this.handleSearchKeyboard(e);
         });
 
-        // Add window resize listener for responsive max cards
-        window.addEventListener('resize', () => {
-            this.handleResize();
-        });
+        // Note: No window resize listener needed - user controls their own "Cards to Show" preference
 
         // Initialize filter listeners first
         this.initializeFilterListeners();
@@ -109,8 +91,8 @@ class DraftingAssistant {
         // Add event listener to max cards select
         const maxCardsSelect = document.getElementById('maxCardsSelect');
         if (maxCardsSelect) {
-            // Set initial value based on screen size
-            maxCardsSelect.value = this.getDefaultMaxCards();
+            // Set initial value based on screen size (only once during initialization)
+            maxCardsSelect.value = this.getInitialDefaultMaxCards();
             this.filters.maxCards = maxCardsSelect.value;
             
             maxCardsSelect.addEventListener('change', () => {
