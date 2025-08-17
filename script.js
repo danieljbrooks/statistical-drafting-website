@@ -571,7 +571,8 @@ class DraftingAssistant {
         const modal = document.getElementById('addCardModal');
         modal.style.display = 'block';
         
-        // Reset search selection when modal opens
+        // Clear search input and reset selection when modal opens
+        document.getElementById('cardSearch').value = '';
         this.selectedSearchIndex = -1;
         
         // Track modal opened
@@ -580,7 +581,8 @@ class DraftingAssistant {
             'event_label': 'Find Card'
         });
         
-        // Focus on search input
+        // Show initial cards and focus on search input
+        this.showInitialCards();
         document.getElementById('cardSearch').focus();
     }
 
@@ -746,6 +748,9 @@ class DraftingAssistant {
         
         // Show compare section
         this.showCompareSection();
+        
+        // Clear search input for next search
+        this.clearSearchInput();
     }
 
     removeCardFromCompare(cardName) {
@@ -971,6 +976,17 @@ class DraftingAssistant {
         return rarity.toLowerCase();
     }
 
+    clearSearchInput() {
+        const cardSearch = document.getElementById('cardSearch');
+        if (cardSearch) {
+            cardSearch.value = '';
+            // Reset search selection when clearing
+            this.selectedSearchIndex = -1;
+            // Show initial cards after clearing
+            this.showInitialCards();
+        }
+    }
+
     handleSearchKeyboard(event) {
         const resultsContainer = document.getElementById('searchResults');
         const searchItems = resultsContainer.querySelectorAll('.search-result-item');
@@ -995,9 +1011,7 @@ class DraftingAssistant {
                 if (this.selectedSearchIndex >= 0 && this.selectedSearchIndex < this.currentSearchResults.length) {
                     const selectedCard = this.currentSearchResults[this.selectedSearchIndex];
                     this.addCardToCompare(selectedCard.name);
-                    // Reset selection
-                    this.selectedSearchIndex = -1;
-                    this.updateSearchSelection(searchItems);
+                    // Note: clearSearchInput() in addCardToCompare() will handle clearing and resetting selection
                 }
                 break;
                 
