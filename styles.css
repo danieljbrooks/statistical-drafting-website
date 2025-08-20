@@ -253,7 +253,7 @@ header p a:hover {
 }
 
 .btn-clear-deck {
-    background-color: var(--success);
+    background-color: var(--danger);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -265,7 +265,7 @@ header p a:hover {
 }
 
 .btn-clear-deck:hover {
-    background-color: #157347;
+    background-color: #c82333;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -731,6 +731,9 @@ th {
     padding-top: 15px;
     border-top: 1px solid var(--border-secondary);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .deck-controls .btn {

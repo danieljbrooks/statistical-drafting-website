@@ -47,6 +47,10 @@ class DraftingAssistant {
             this.clearDeck();
         });
 
+        document.getElementById('importClipboardBtn').addEventListener('click', () => {
+            this.importFromClipboard();
+        });
+
         // Modal controls
         const modal = document.getElementById('addCardModal');
         const closeBtn = document.querySelector('.close');
@@ -946,6 +950,128 @@ class DraftingAssistant {
         });
         
         console.log('Deck cleared');
+    }
+
+    async importFromClipboard() {
+        if (!this.cardData || !this.currentSet) {
+            alert('Please select a set first.');
+            return;
+        }
+
+        try {
+            const clipboardText = await navigator.clipboard.readText();
+            if (!clipboardText.trim()) {
+                alert('Clipboard is empty.');
+                return;
+            }
+
+            // Clear the deck first
+            this.clearDeck();
+
+            // Parse clipboard text and add cards
+            this.parseAndAddCardsFromText(clipboardText);
+
+            // Track clipboard import
+            gtag('event', 'clipboard_import', {
+                'event_category': 'Draft Assistant',
+                'event_label': 'Clipboard Import',
+                'set': this.currentSet,
+                'value': 1
+            });
+
+        } catch (error) {
+            console.error('Error reading clipboard:', error);
+            alert('Unable to read from clipboard. Please make sure you have copied text to your clipboard and that your browser supports clipboard access.');
+        }
+    }
+
+    parseAndAddCardsFromText(text) {
+        const lines = text.split('\n');
+        let cardsAdded = 0;
+        let cardsNotFound = [];
+
+        for (const line of lines) {
+            const trimmedLine = line.trim();
+            if (!trimmedLine) continue;
+
+            // Skip lines that are likely headers or non-card lines
+            if (trimmedLine.toLowerCase().includes('pack ') || 
+                trimmedLine.toLowerCase().includes('deck') || 
+                trimmedLine.toLowerCase().includes('sideboard')) {
+                continue;
+            }
+
+            // Parse line for card name and quantity
+            const { cardName, quantity } = this.parseCardLine(trimmedLine);
+            
+            if (cardName) {
+                // Find card in current set data (case-insensitive)
+                const foundCard = this.cardData.find(card => 
+                    card.name.toLowerCase() === cardName.toLowerCase()
+                );
+
+                if (foundCard) {
+                    // Add the card(s) to collection
+                    if (this.collection[foundCard.name] === undefined) {
+                        this.collection[foundCard.name] = quantity;
+                    } else {
+                        this.collection[foundCard.name] += quantity;
+                    }
+                    cardsAdded += quantity;
+                } else {
+                    cardsNotFound.push(cardName);
+                }
+            }
+        }
+
+        // Update UI
+        this.updateDeckTable();
+        this.applyFilters();
+
+        // Show results
+        let message = `Import complete. Added ${cardsAdded} cards to deck.`;
+        if (cardsNotFound.length > 0) {
+            message += `\n\nCards not found in current set (${this.currentSet}):\n` + 
+                      cardsNotFound.slice(0, 10).join('\n');
+            if (cardsNotFound.length > 10) {
+                message += `\n... and ${cardsNotFound.length - 10} more`;
+            }
+        }
+        
+        alert(message);
+        console.log('Import complete:', { cardsAdded, cardsNotFound });
+    }
+
+    parseCardLine(line) {
+        // Remove common prefixes and suffixes that aren't part of card names
+        line = line.trim();
+        
+        // Pattern 1: Number + Card Name (e.g., "1 Perilous Snare (DFT) 23", "2 Lightning Bolt")
+        let match = line.match(/^(\d+)\s+(.+?)(?:\s+\([A-Z0-9]+\))?(?:\s+\d+)?$/);
+        if (match) {
+            const quantity = parseInt(match[1]);
+            let cardName = match[2].trim();
+            
+            // Remove set codes and numbers at the end
+            cardName = cardName.replace(/\s+\([A-Z0-9]+\)\s*\d*$/, '');
+            cardName = cardName.replace(/\s+\d+$/, '');
+            
+            return { cardName: cardName.trim(), quantity };
+        }
+
+        // Pattern 2: Just card name (e.g., "Thopter Fabricator", "Transit Mage")
+        // Check if it looks like a card name (doesn't start with number, isn't empty)
+        if (line && !line.match(/^\d/)) {
+            let cardName = line;
+            
+            // Remove set codes and numbers at the end
+            cardName = cardName.replace(/\s+\([A-Z0-9]+\)\s*\d*$/, '');
+            cardName = cardName.replace(/\s+\d+$/, '');
+            
+            return { cardName: cardName.trim(), quantity: 1 };
+        }
+
+        return { cardName: null, quantity: 0 };
     }
 
     getRarityAbbreviation(rarity) {
