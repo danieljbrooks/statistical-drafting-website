@@ -16,6 +16,22 @@ class DraftingAssistant {
             maxCards: this.getInitialDefaultMaxCards()
         };
         
+        // Sorting state
+        this.currentSort = {
+            column: 'rating',
+            direction: 'desc'
+        };
+        
+        // Column visibility state
+        this.visibleColumns = {
+            color: true,
+            rarity: true,
+            rating: true,
+            synergy: true,
+            p1p1: true,
+            compare: true
+        };
+        
         // Available sets that have Premier Draft models
         this.availableSetModels = ['EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSetModels:', this.availableSetModels);
@@ -79,6 +95,15 @@ class DraftingAssistant {
 
         // Initialize filter listeners first
         this.initializeFilterListeners();
+        
+        // Initialize column visibility listeners
+        this.initializeColumnVisibilityListeners();
+        
+        // Initialize sorting listeners
+        this.initializeSortingListeners();
+        
+        // Initialize card image hover functionality
+        this.initializeCardImageHover();
 
         // Load available sets
         await this.loadAvailableSets();
@@ -105,6 +130,208 @@ class DraftingAssistant {
                 this.applyFilters();
             });
         }
+    }
+
+    initializeColumnVisibilityListeners() {
+        // Add event listeners to column visibility checkboxes
+        document.querySelectorAll('input[name="column"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                this.updateColumnVisibility();
+            });
+        });
+    }
+
+    initializeSortingListeners() {
+        // Add event listeners to sortable column headers
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = header.getAttribute('data-column');
+                this.sortByColumn(column);
+            });
+        });
+    }
+
+    updateColumnVisibility() {
+        // Get selected columns
+        const selectedColumns = Array.from(document.querySelectorAll('input[name="column"]:checked'))
+            .map(checkbox => checkbox.value);
+        
+        // Update visibility state
+        this.visibleColumns = {
+            color: selectedColumns.includes('color'),
+            rarity: selectedColumns.includes('rarity'),
+            rating: selectedColumns.includes('rating'),
+            synergy: selectedColumns.includes('synergy'),
+            p1p1: selectedColumns.includes('p1p1'),
+            compare: selectedColumns.includes('compare')
+        };
+        
+        // Update table headers
+        document.querySelectorAll('.column-color').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.color);
+        });
+        document.querySelectorAll('.column-rarity').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.rarity);
+        });
+        document.querySelectorAll('.column-rating').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.rating);
+        });
+        document.querySelectorAll('.column-synergy').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.synergy);
+        });
+        document.querySelectorAll('.column-p1p1').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.p1p1);
+        });
+        document.querySelectorAll('.column-compare').forEach(el => {
+            el.classList.toggle('hidden', !this.visibleColumns.compare);
+        });
+    }
+
+    sortByColumn(column) {
+        // Toggle sort direction if clicking the same column
+        if (this.currentSort.column === column) {
+            this.currentSort.direction = this.currentSort.direction === 'desc' ? 'asc' : 'desc';
+        } else {
+            this.currentSort.column = column;
+            this.currentSort.direction = 'desc'; // Default to descending for new column
+        }
+        
+        // Update sort indicators
+        this.updateSortIndicators();
+        
+        // Re-apply filters which will trigger a sort
+        this.applyFilters();
+    }
+
+    updateSortIndicators() {
+        // Clear all sort indicators
+        document.querySelectorAll('.sort-indicator').forEach(indicator => {
+            indicator.textContent = '';
+        });
+        
+        // Set indicator for current sort column
+        const currentHeader = document.querySelector(`[data-column="${this.currentSort.column}"] .sort-indicator`);
+        if (currentHeader) {
+            currentHeader.textContent = this.currentSort.direction === 'desc' ? '▼' : '▲';
+        }
+    }
+
+    initializeCardImageHover() {
+        // Cache for card images to avoid repeated API calls
+        this.cardImageCache = new Map();
+        this.tooltipElement = document.getElementById('cardImageTooltip');
+        this.currentHoverTimeout = null;
+        this.currentCardName = null;
+    }
+
+    async showCardImage(cardName, x, y) {
+        if (!this.tooltipElement || !cardName) return;
+        
+        // Clear any existing timeout
+        if (this.currentHoverTimeout) {
+            clearTimeout(this.currentHoverTimeout);
+        }
+        
+        this.currentCardName = cardName;
+        
+        // Smart positioning to keep tooltip on screen
+        const tooltipWidth = 300; // Max width from CSS
+        const tooltipHeight = 420; // Max height from CSS
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+        
+        // Calculate optimal position
+        let finalX = x;
+        let finalY = y;
+        
+        // Adjust horizontal position if tooltip would go off screen
+        if (x + tooltipWidth > viewportWidth + scrollX) {
+            finalX = x - tooltipWidth - 20; // Position to the left instead
+        }
+        
+        // Adjust vertical position if tooltip would go off screen
+        if (y + tooltipHeight > viewportHeight + scrollY) {
+            finalY = Math.max(scrollY + 10, y - tooltipHeight + 50); // Position above
+        }
+        
+        // Ensure tooltip doesn't go off the left edge
+        finalX = Math.max(scrollX + 10, finalX);
+        
+        // Position tooltip
+        this.tooltipElement.style.left = finalX + 'px';
+        this.tooltipElement.style.top = finalY + 'px';
+        this.tooltipElement.style.display = 'block';
+        
+        // Check cache first
+        if (this.cardImageCache.has(cardName)) {
+            const cachedImageUrl = this.cardImageCache.get(cardName);
+            if (cachedImageUrl) {
+                this.tooltipElement.innerHTML = `<img src="${cachedImageUrl}" alt="${cardName}" loading="lazy">`;
+            } else {
+                this.tooltipElement.innerHTML = `<div class="card-image-loading">Image not available</div>`;
+            }
+            return;
+        }
+        
+        // Show loading state
+        this.tooltipElement.innerHTML = `<div class="card-image-loading">Loading...</div>`;
+        
+        try {
+            // Query Scryfall API
+            const response = await fetch(`https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}`);
+            
+            if (response.ok) {
+                const cardData = await response.json();
+                let imageUrl = null;
+                
+                // Try to get the best available image
+                if (cardData.image_uris) {
+                    imageUrl = cardData.image_uris.normal || cardData.image_uris.large || cardData.image_uris.small;
+                } else if (cardData.card_faces && cardData.card_faces[0].image_uris) {
+                    // Handle double-faced cards
+                    imageUrl = cardData.card_faces[0].image_uris.normal || cardData.card_faces[0].image_uris.large || cardData.card_faces[0].image_uris.small;
+                }
+                
+                // Cache the result
+                this.cardImageCache.set(cardName, imageUrl);
+                
+                // Only update if we're still hovering the same card
+                if (this.currentCardName === cardName && this.tooltipElement.style.display === 'block') {
+                    if (imageUrl) {
+                        this.tooltipElement.innerHTML = `<img src="${imageUrl}" alt="${cardName}" loading="lazy">`;
+                    } else {
+                        this.tooltipElement.innerHTML = `<div class="card-image-loading">Image not available</div>`;
+                    }
+                }
+            } else {
+                // Cache the failed result to avoid repeated API calls
+                this.cardImageCache.set(cardName, null);
+                if (this.currentCardName === cardName && this.tooltipElement.style.display === 'block') {
+                    this.tooltipElement.innerHTML = `<div class="card-image-loading">Image not found</div>`;
+                }
+            }
+        } catch (error) {
+            console.warn('Error fetching card image:', error);
+            this.cardImageCache.set(cardName, null);
+            if (this.currentCardName === cardName && this.tooltipElement.style.display === 'block') {
+                this.tooltipElement.innerHTML = `<div class="card-image-loading">Error loading image</div>`;
+            }
+        }
+    }
+
+    hideCardImage() {
+        if (this.currentHoverTimeout) {
+            clearTimeout(this.currentHoverTimeout);
+        }
+        
+        this.currentHoverTimeout = setTimeout(() => {
+            if (this.tooltipElement) {
+                this.tooltipElement.style.display = 'none';
+                this.currentCardName = null;
+            }
+        }, 150); // Small delay to prevent flickering
     }
 
     getFilterValues() {
@@ -210,9 +437,9 @@ class DraftingAssistant {
                 card.synergy = (currentRatings[index] || 50) - (p1p1Ratings[index] || 50);
             });
 
-            console.log('Created pick order data, sorting by rating...');
-            // Sort by rating (highest first)
-            pickOrderData.sort((a, b) => b.rating - a.rating);
+            console.log('Created pick order data, sorting by', this.currentSort.column, this.currentSort.direction);
+            // Sort by current sort column and direction
+            this.sortPickOrderData(pickOrderData);
 
             // Apply max cards filter after sorting
             let finalPickOrderData = pickOrderData;
@@ -231,6 +458,56 @@ class DraftingAssistant {
             // Show error in table
             tbody.innerHTML = '<tr><td colspan="8">Error updating pick order: ' + error.message + '</td></tr>';
         }
+    }
+
+    sortPickOrderData(data) {
+        data.sort((a, b) => {
+            let aValue, bValue;
+            
+            switch (this.currentSort.column) {
+                case 'name':
+                    aValue = a.name.toLowerCase();
+                    bValue = b.name.toLowerCase();
+                    break;
+                case 'color':
+                    aValue = a.color_identity;
+                    bValue = b.color_identity;
+                    break;
+                case 'rarity':
+                    // Sort rarity by priority: mythic > rare > uncommon > common
+                    const rarityOrder = { 'mythic': 4, 'rare': 3, 'uncommon': 2, 'common': 1, 'special': 4 };
+                    aValue = rarityOrder[a.rarity.toLowerCase()] || 0;
+                    bValue = rarityOrder[b.rarity.toLowerCase()] || 0;
+                    break;
+                case 'rating':
+                    aValue = a.rating || 0;
+                    bValue = b.rating || 0;
+                    break;
+                case 'synergy':
+                    aValue = a.synergy || 0;
+                    bValue = b.synergy || 0;
+                    break;
+                case 'p1p1':
+                    aValue = a.p1p1_rating || 0;
+                    bValue = b.p1p1_rating || 0;
+                    break;
+                default:
+                    aValue = a.rating || 0;
+                    bValue = b.rating || 0;
+            }
+            
+            if (this.currentSort.direction === 'desc') {
+                if (typeof aValue === 'string') {
+                    return bValue.localeCompare(aValue);
+                }
+                return bValue - aValue;
+            } else {
+                if (typeof aValue === 'string') {
+                    return aValue.localeCompare(bValue);
+                }
+                return aValue - bValue;
+            }
+        });
     }
 
     loadAvailableSets() {
@@ -302,7 +579,13 @@ class DraftingAssistant {
         // Start new draft when changing sets
         this.collection = {};
         this.compareCollection = {};
-        // this.updateCollectionTable(); // No longer needed
+        
+        // Reset sort to rating descending
+        this.currentSort = {
+            column: 'rating',
+            direction: 'desc'
+        };
+        this.updateSortIndicators();
 
         // Clear compare section when changing sets
         this.updateCompareTable();
@@ -486,7 +769,7 @@ class DraftingAssistant {
         tbody.innerHTML = '';
 
         if (pickOrderData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7">No cards found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8">No cards found</td></tr>';
             return;
         }
 
@@ -495,12 +778,13 @@ class DraftingAssistant {
             row.setAttribute('data-color', card.color_identity);
             
             row.innerHTML = `
-                <td>${card.name}</td>
-                <td><span class="color-${card.color_identity}">${card.color_identity}</span></td>
-                <td class="rarity-${this.getRarityClass(card.rarity)}">${this.getRarityAbbreviation(card.rarity)}</td>
-                <td class="rating ${this.getRatingClass(card.rating)}">${card.rating.toFixed(1)}</td>
-                <td class="synergy ${card.synergy >= 0 ? 'synergy-positive' : 'synergy-negative'}">${card.synergy >= 0 ? '+' : ''}${card.synergy.toFixed(1)}</td>
-                <td>
+                <td><span class="card-name-hoverable" data-card-name="${this.escapeHtmlAttribute(card.name)}">${card.name}</span></td>
+                <td class="column-color ${this.visibleColumns.color ? '' : 'hidden'}"><span class="color-${card.color_identity}">${card.color_identity}</span></td>
+                <td class="column-rarity ${this.visibleColumns.rarity ? '' : 'hidden'} rarity-${this.getRarityClass(card.rarity)}">${this.getRarityAbbreviation(card.rarity)}</td>
+                <td class="column-rating ${this.visibleColumns.rating ? '' : 'hidden'} rating ${this.getRatingClass(card.rating)}">${card.rating.toFixed(1)}</td>
+                <td class="column-synergy ${this.visibleColumns.synergy ? '' : 'hidden'} synergy ${card.synergy >= 0 ? 'synergy-positive' : 'synergy-negative'}">${card.synergy >= 0 ? '+' : ''}${card.synergy.toFixed(1)}</td>
+                <td class="column-p1p1 ${this.visibleColumns.p1p1 ? '' : 'hidden'} rating ${this.getRatingClass(card.p1p1_rating)}">${card.p1p1_rating.toFixed(1)}</td>
+                <td class="column-compare ${this.visibleColumns.compare ? '' : 'hidden'}">
                     <button class="btn btn-compare" data-card-name="${this.escapeHtmlAttribute(card.name)}">Compare</button>
                 </td>
                 <td>
@@ -512,6 +796,9 @@ class DraftingAssistant {
 
         // Add event listeners for pick buttons
         this.addTableButtonListeners();
+        
+        // Add event listeners for card name hover
+        this.addCardNameHoverListeners();
         
         // Update deck table
         this.updateDeckTable();
@@ -539,6 +826,34 @@ class DraftingAssistant {
             button.addEventListener('click', (e) => {
                 const cardName = e.target.getAttribute('data-card-name');
                 this.addCardToCompare(cardName);
+            });
+        });
+    }
+
+    addCardNameHoverListeners() {
+        // Add event listeners for card name hover in pick order table
+        this.addCardNameHoverListenersForTable('#pickOrderTable');
+    }
+
+    addCardNameHoverListenersForTable(tableSelector) {
+        // Add event listeners for card name hover in specified table
+        this.addCardNameHoverListenersForContainer(tableSelector);
+    }
+
+    addCardNameHoverListenersForContainer(containerSelector) {
+        // Add event listeners for card name hover in specified container
+        const cardNameElements = document.querySelectorAll(`${containerSelector} .card-name-hoverable`);
+        cardNameElements.forEach(element => {
+            element.addEventListener('mouseenter', (e) => {
+                const cardName = e.target.getAttribute('data-card-name');
+                const rect = e.target.getBoundingClientRect();
+                const x = rect.right + 10 + window.scrollX; // Position to the right of the card name
+                const y = rect.top + window.scrollY; // Account for scroll position
+                this.showCardImage(cardName, x, y);
+            });
+
+            element.addEventListener('mouseleave', () => {
+                this.hideCardImage();
             });
         });
     }
@@ -618,7 +933,7 @@ class DraftingAssistant {
             item.setAttribute('data-color', card.color_identity);
             item.innerHTML = `
                 <div class="search-result-content">
-                    <div class="card-name">${cardName}</div>
+                    <div class="card-name card-name-hoverable" data-card-name="${this.escapeHtmlAttribute(cardName)}">${cardName}</div>
                     <div class="card-rarity">${this.getRarityAbbreviation(card.rarity)}</div>
                     <div class="card-rating">${card.rating ? card.rating.toFixed(1) : 'N/A'}</div>
                 </div>
@@ -645,6 +960,9 @@ class DraftingAssistant {
             
             resultsContainer.appendChild(item);
         });
+        
+        // Add hover listeners for card names in initial search results
+        this.addCardNameHoverListenersForContainer('#searchResults');
     }
 
     searchCards(query) {
@@ -683,7 +1001,7 @@ class DraftingAssistant {
             item.setAttribute('data-color', card.color_identity);
             item.innerHTML = `
                 <div class="search-result-content">
-                    <div class="card-name">${card.name}</div>
+                    <div class="card-name card-name-hoverable" data-card-name="${this.escapeHtmlAttribute(card.name)}">${card.name}</div>
                     <div class="card-rarity">${this.getRarityAbbreviation(card.rarity)}</div>
                     <div class="card-rating">${card.rating ? card.rating.toFixed(1) : 'N/A'}</div>
                 </div>
@@ -710,6 +1028,9 @@ class DraftingAssistant {
             
             resultsContainer.appendChild(item);
         });
+        
+        // Add hover listeners for card names in search results
+        this.addCardNameHoverListenersForContainer('#searchResults');
     }
 
     addCardToCollection(cardName) {
@@ -732,6 +1053,12 @@ class DraftingAssistant {
         this.updateCompareTable();
         this.hideCompareSectionIfEmpty();
         
+        // Update deck table
+        this.updateDeckTable();
+        
+        // Scroll to deck section
+        this.scrollToDeckSection();
+        
         // this.updateCollectionTable(); // No longer needed
         this.applyFilters(); // Use filters instead of updatePickOrder
     }
@@ -752,6 +1079,9 @@ class DraftingAssistant {
         
         // Show compare section
         this.showCompareSection();
+        
+        // Scroll to compare section
+        this.scrollToCompareSection();
         
         // Clear search input for next search
         this.clearSearchInput();
@@ -803,7 +1133,7 @@ class DraftingAssistant {
             const row = document.createElement('tr');
             row.setAttribute('data-color', card.color_identity);
             row.innerHTML = `
-                <td>${cardName}</td>
+                <td><span class="card-name-hoverable" data-card-name="${this.escapeHtmlAttribute(cardName)}">${cardName}</span></td>
                 <td class="rating ${this.getRatingClass(card.rating)}">${card.rating ? card.rating.toFixed(1) : 'N/A'}</td>
                 <td>
                     <button class="btn btn-pick" data-card-name="${this.escapeHtmlAttribute(cardName)}">Pick</button>
@@ -820,12 +1150,40 @@ class DraftingAssistant {
                 this.pickCardFromCompare(cardName);
             });
         });
+        
+        // Add hover listeners for card names in compare table
+        this.addCardNameHoverListenersForTable('#compareTable');
     }
 
     showCompareSection() {
         const compareSection = document.getElementById('compareSection');
         if (compareSection) {
             compareSection.style.display = 'block';
+        }
+    }
+
+    scrollToCompareSection() {
+        const compareSection = document.getElementById('compareSection');
+        if (compareSection) {
+            compareSection.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start',
+                inline: 'nearest'
+            });
+        }
+    }
+
+    scrollToDeckSection() {
+        const deckSection = document.querySelector('.deck-section');
+        if (deckSection) {
+            // Use a small timeout to ensure DOM updates are complete
+            setTimeout(() => {
+                deckSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }, 100);
         }
     }
 
@@ -849,9 +1207,6 @@ class DraftingAssistant {
         this.compareCollection = {};
         this.updateCompareTable();
         this.hideCompareSectionIfEmpty();
-        
-        // Update deck table
-        this.updateDeckTable();
         
         // The updatePickOrder() call in addCardToCollection will recalculate ratings
         // with the new collection, so the Rating and P1P1 Rating columns will now differ
@@ -902,7 +1257,7 @@ class DraftingAssistant {
             const row = document.createElement('tr');
             row.setAttribute('data-color', card.color_identity);
             row.innerHTML = `
-                <td>${cardName}</td>
+                <td><span class="card-name-hoverable" data-card-name="${this.escapeHtmlAttribute(cardName)}">${cardName}</span></td>
                 <td>${count}</td>
                 <td class="rating ${this.getRatingClass(card.rating)}">${card.rating ? card.rating.toFixed(1) : 'N/A'}</td>
                 <td>
@@ -920,6 +1275,9 @@ class DraftingAssistant {
                 this.removeCardFromCollection(cardName);
             });
         });
+        
+        // Add hover listeners for card names in deck table
+        this.addCardNameHoverListenersForTable('#deckTable');
     }
 
     clearCollection() {
@@ -936,20 +1294,26 @@ class DraftingAssistant {
     }
 
     clearDeck() {
+        // Track deck cleared (before clearing for accurate count)
+        const cardsCleared = Object.keys(this.collection).length;
+        
         // Clear current deck
         this.collection = {};
         this.compareCollection = {};
         this.updateDeckTable();
         this.updateCompareTable();
+        this.hideCompareSectionIfEmpty();
         
-        // Track deck cleared
+        // Refresh the pick order table with new ratings based on empty collection
+        this.applyFilters();
+        
         gtag('event', 'clear_deck_clicked', {
             'event_category': 'Draft Assistant',
             'event_label': 'Clear Deck Clicked',
-            'cards_cleared': Object.keys(this.collection).length
+            'cards_cleared': cardsCleared
         });
         
-        console.log('Deck cleared');
+        console.log('Deck cleared and pick order refreshed');
     }
 
     async importFromClipboard() {
@@ -1027,6 +1391,9 @@ class DraftingAssistant {
         // Update UI
         this.updateDeckTable();
         this.applyFilters();
+        
+        // Scroll to deck section to show imported cards
+        this.scrollToDeckSection();
 
         // Show results
         let message = `Import complete. Added ${cardsAdded} cards to deck.`;

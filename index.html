@@ -107,14 +107,17 @@
                             <!-- Options will be populated by JavaScript -->
                         </select>
                     </div>
-                </div>
-                
-                <div class="control-section">
-                    <h3>Actions</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-secondary" id="findCardBtn">Find Card</button>
+                    <div class="set-selection" style="margin-top: 10px;">
+                        <label>CARDS TO SHOW</label>
+                        <select id="maxCardsSelect" class="max-cards-select">
+                            <option value="10">10</option>
+                            <option value="50">50</option>
+                            <option value="all" selected>All</option>
+                        </select>
                     </div>
                 </div>
+                
+
                 
                 <div class="control-section">
                     <h3>Rarity</h3>
@@ -172,13 +175,36 @@
                     </div>
                 </div>
                 
+
+
                 <div class="control-section">
-                    <h3>Cards to Show</h3>
-                    <select id="maxCardsSelect" class="max-cards-select">
-                        <option value="10">10</option>
-                        <option value="50">50</option>
-                        <option value="all" selected>All</option>
-                    </select>
+                    <h3>Columns to Show</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-color" name="column" value="color" checked>
+                            <label for="column-color">Color</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-rarity" name="column" value="rarity" checked>
+                            <label for="column-rarity">Rarity</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-rating" name="column" value="rating" checked>
+                            <label for="column-rating">Rating</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-synergy" name="column" value="synergy" checked>
+                            <label for="column-synergy">Synergy</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-p1p1" name="column" value="p1p1" checked>
+                            <label for="column-p1p1">P1P1 Rating</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="column-compare" name="column" value="compare" checked>
+                            <label for="column-compare">Compare</label>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -193,20 +219,21 @@
                     <h2>Pick Order</h2>
                     <div class="table-container">
                         <table id="pickOrderTable" class="table">
-                                                    <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Color</th>
-                                <th>Rarity</th>
-                                <th>Rating</th>
-                                <th>Synergy</th>
-                                <th>Compare</th>
-                                <th>Pick</th>
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-column="name">Name <span class="sort-indicator"></span></th>
+                                    <th class="sortable column-color" data-column="color">Color <span class="sort-indicator"></span></th>
+                                    <th class="sortable column-rarity" data-column="rarity">Rarity <span class="sort-indicator"></span></th>
+                                    <th class="sortable column-rating" data-column="rating">Rating <span class="sort-indicator">▼</span></th>
+                                    <th class="sortable column-synergy" data-column="synergy">Synergy <span class="sort-indicator"></span></th>
+                                    <th class="sortable column-p1p1" data-column="p1p1">P1P1 Rating <span class="sort-indicator"></span></th>
+                                    <th class="column-compare">Compare</th>
+                                    <th>Pick</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             <tr>
-                                <td colspan="7">Select a set to begin</td>
+                                <td colspan="8">Select a set to begin</td>
                             </tr>
                         </tbody>
                         </table>
@@ -235,6 +262,9 @@
 
                 <section class="deck-section">
                     <h2>Deck</h2>
+                    <div class="deck-actions">
+                        <button class="btn btn-dark" id="findCardBtn">Find Card</button>
+                    </div>
                     <div class="table-container">
                         <table id="deckTable" class="table">
                             <thead>
@@ -273,6 +303,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Card Image Tooltip -->
+    <div id="cardImageTooltip" class="card-image-tooltip"></div>
 
     <script src="script.js?v=5"></script>
 </body>

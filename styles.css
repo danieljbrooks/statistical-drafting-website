@@ -252,6 +252,29 @@ header p a:hover {
     transition: all 0.2s ease;
 }
 
+.btn-dark {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-dark:hover {
+    background-color: #495057;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-dark:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
 .btn-clear-deck {
     background-color: var(--danger);
     color: white;
@@ -646,16 +669,22 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: var(--bg-secondary);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     transition: background-color 0.3s ease;
+    border: 1px solid var(--border-primary);
 }
 
 th, td {
-    padding: 8px 10px;
+    padding: 6px 8px;
     text-align: center;
     border-bottom: 1px solid var(--border-secondary);
+    border-right: 1px solid var(--border-secondary);
     vertical-align: middle;
     transition: border-color 0.3s ease;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
 }
 
 th {
@@ -665,10 +694,53 @@ th {
     position: sticky;
     top: 0;
     border-bottom: 2px solid var(--border-primary);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Sortable column headers */
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.sortable:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.sort-indicator {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: 4px;
+}
+
+/* Column visibility */
+.column-color.hidden {
+    display: none;
+}
+
+.column-rarity.hidden {
+    display: none;
+}
+
+.column-rating.hidden {
+    display: none;
+}
+
+.column-synergy.hidden {
+    display: none;
+}
+
+.column-p1p1.hidden {
+    display: none;
+}
+
+.column-compare.hidden {
+    display: none;
 }
 
 
@@ -724,6 +796,11 @@ th {
     color: var(--text-primary);
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.deck-actions {
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .deck-controls {
@@ -1241,4 +1318,46 @@ th {
 .search-result-item.search-result-selected .btn:hover {
     background-color: var(--bg-tertiary);
     color: var(--accent-primary);
+}
+
+/* Card image tooltip */
+.card-image-tooltip {
+    position: absolute;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    background: transparent;
+    max-width: 300px;
+    max-height: 420px;
+}
+
+.card-image-tooltip img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid var(--border-primary);
+}
+
+.card-image-loading {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid var(--border-primary);
+    font-size: 0.9rem;
+}
+
+/* Hoverable card names */
+.card-name-hoverable {
+    cursor: pointer;
+    position: relative;
+    border-bottom: 1px dotted var(--text-muted);
+}
+
+.card-name-hoverable:hover {
+    color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
 }
