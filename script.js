@@ -855,6 +855,14 @@ class DraftingAssistant {
             element.addEventListener('mouseleave', () => {
                 this.hideCardImage();
             });
+
+            // Add click listener for pick order table card names
+            if (containerSelector === '#pickOrderTable') {
+                element.addEventListener('click', (e) => {
+                    const cardName = e.target.getAttribute('data-card-name');
+                    this.pickCard(cardName);
+                });
+            }
         });
     }
 
