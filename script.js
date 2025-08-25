@@ -222,6 +222,15 @@ class DraftingAssistant {
         this.tooltipElement = document.getElementById('cardImageTooltip');
         this.currentHoverTimeout = null;
         this.currentCardName = null;
+        this.isMobileDevice = this.detectMobileDevice();
+        this.mobileHoverStates = new Map(); // Track which cards are "hovered" on mobile
+    }
+
+    detectMobileDevice() {
+        // Detect if this is a mobile device that requires tap-to-hover
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+               ('ontouchstart' in window) || 
+               (navigator.maxTouchPoints > 0);
     }
 
     async showCardImage(cardName, x, y) {
@@ -332,6 +341,13 @@ class DraftingAssistant {
                 this.currentCardName = null;
             }
         }, 150); // Small delay to prevent flickering
+    }
+
+    clearMobileHoverStates() {
+        // Clear all mobile hover states (useful when refreshing tables)
+        if (this.mobileHoverStates) {
+            this.mobileHoverStates.clear();
+        }
     }
 
     getFilterValues() {
@@ -768,6 +784,9 @@ class DraftingAssistant {
         const tbody = document.querySelector('#pickOrderTable tbody');
         tbody.innerHTML = '';
 
+        // Clear mobile hover states when refreshing the table
+        this.clearMobileHoverStates();
+
         if (pickOrderData.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8">No cards found</td></tr>';
             return;
@@ -844,24 +863,48 @@ class DraftingAssistant {
         // Add event listeners for card name hover in specified container
         const cardNameElements = document.querySelectorAll(`${containerSelector} .card-name-hoverable`);
         cardNameElements.forEach(element => {
-            element.addEventListener('mouseenter', (e) => {
-                const cardName = e.target.getAttribute('data-card-name');
-                const rect = e.target.getBoundingClientRect();
-                const x = rect.right + 10 + window.scrollX; // Position to the right of the card name
-                const y = rect.top + window.scrollY; // Account for scroll position
-                this.showCardImage(cardName, x, y);
-            });
-
-            element.addEventListener('mouseleave', () => {
-                this.hideCardImage();
-            });
-
-            // Add click listener for pick order table card names
-            if (containerSelector === '#pickOrderTable') {
+            if (this.isMobileDevice) {
+                // Mobile device: clicking card names only shows/hides card images
                 element.addEventListener('click', (e) => {
+                    e.preventDefault();
                     const cardName = e.target.getAttribute('data-card-name');
-                    this.pickCard(cardName);
+                    const elementKey = `${containerSelector}_${cardName}`;
+                    
+                    // Toggle card image display (never pick cards on mobile)
+                    if (this.mobileHoverStates.get(elementKey)) {
+                        // Hide card image
+                        this.hideCardImage();
+                        this.mobileHoverStates.delete(elementKey);
+                    } else {
+                        // Show card image
+                        const rect = e.target.getBoundingClientRect();
+                        const x = rect.right + 10 + window.scrollX;
+                        const y = rect.top + window.scrollY;
+                        this.showCardImage(cardName, x, y);
+                        this.mobileHoverStates.set(elementKey, true);
+                    }
                 });
+            } else {
+                // Desktop: use mouse events
+                element.addEventListener('mouseenter', (e) => {
+                    const cardName = e.target.getAttribute('data-card-name');
+                    const rect = e.target.getBoundingClientRect();
+                    const x = rect.right + 10 + window.scrollX; // Position to the right of the card name
+                    const y = rect.top + window.scrollY; // Account for scroll position
+                    this.showCardImage(cardName, x, y);
+                });
+
+                element.addEventListener('mouseleave', () => {
+                    this.hideCardImage();
+                });
+
+                // Add click listener for pick order table card names on desktop ONLY
+                if (containerSelector === '#pickOrderTable') {
+                    element.addEventListener('click', (e) => {
+                        const cardName = e.target.getAttribute('data-card-name');
+                        this.pickCard(cardName);
+                    });
+                }
             }
         });
     }
