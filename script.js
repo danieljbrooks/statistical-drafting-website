@@ -224,6 +224,25 @@ class DraftingAssistant {
         this.currentCardName = null;
         this.isMobileDevice = this.detectMobileDevice();
         this.mobileHoverStates = new Map(); // Track which cards are "hovered" on mobile
+        
+        // Add global tap listener for mobile to hide card images when tapping elsewhere
+        if (this.isMobileDevice) {
+            this.initializeMobileGlobalTapListener();
+        }
+    }
+
+    initializeMobileGlobalTapListener() {
+        // Add global document listener to hide card images when tapping anywhere on mobile
+        document.addEventListener('click', (e) => {
+            // Check if the tap was on a card name element
+            const isCardNameTap = e.target.closest('.card-name-hoverable');
+            
+            // If there's a visible card image and the tap wasn't on a card name, hide the image
+            if (!isCardNameTap && this.tooltipElement && this.tooltipElement.style.display !== 'none') {
+                this.hideCardImage();
+                this.clearMobileHoverStates();
+            }
+        });
     }
 
     detectMobileDevice() {
