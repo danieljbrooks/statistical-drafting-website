@@ -1391,12 +1391,24 @@ class DraftingAssistant {
         this.scrollToDeckSection();
 
         // Show results
-        let message = `Import complete. Added ${cardsAdded} cards to deck.`;
-        if (cardsNotFound.length > 0) {
-            message += `\n\nCards not found in current set (${this.currentSet}):\n` + 
-                      cardsNotFound.slice(0, 10).join('\n');
-            if (cardsNotFound.length > 10) {
-                message += `\n... and ${cardsNotFound.length - 10} more`;
+        let message;
+        if (cardsAdded === 0) {
+            message = `No cards were imported from clipboard.\n\nCards can be imported in most decklist formats, for example:\n2 Lightning Bolt (M21) 162\nShock\n3 Volcanic Hammer`;
+            if (cardsNotFound.length > 0) {
+                message += `\n\nCards not found in current set (${this.currentSet}):\n` + 
+                          cardsNotFound.slice(0, 10).join('\n');
+                if (cardsNotFound.length > 10) {
+                    message += `\n... and ${cardsNotFound.length - 10} more`;
+                }
+            }
+        } else {
+            message = `Import complete. Added ${cardsAdded} cards to deck.`;
+            if (cardsNotFound.length > 0) {
+                message += `\n\nCards not found in current set (${this.currentSet}):\n` + 
+                          cardsNotFound.slice(0, 10).join('\n');
+                if (cardsNotFound.length > 10) {
+                    message += `\n... and ${cardsNotFound.length - 10} more`;
+                }
             }
         }
         
