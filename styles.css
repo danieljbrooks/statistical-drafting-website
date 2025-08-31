@@ -1374,19 +1374,3 @@ th {
     border-bottom: 2px solid var(--accent-primary);
     transform: translateY(-1px);
 }
-
-/* Mobile-specific styles for touched/active states */
-@media (hover: none) and (pointer: coarse) {
-    #pickOrderTable .card-name-hoverable {
-        /* More prominent styling on mobile to indicate they're tappable */
-        font-weight: 700;
-        border-bottom: 1px solid var(--accent-secondary);
-    }
-    
-    #pickOrderTable .card-name-hoverable:active {
-        /* Immediate feedback on tap */
-        color: var(--accent-primary);
-        background-color: rgba(var(--accent-primary-rgb), 0.1);
-        border-radius: 3px;
-    }
-}

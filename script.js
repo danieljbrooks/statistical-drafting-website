@@ -32,9 +32,9 @@ class DraftingAssistant {
             compare: true
         };
         
-        // Available sets that have Premier Draft models
-        this.availableSetModels = ['EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
-        console.log('Constructor complete, availableSetModels:', this.availableSetModels);
+        // Available sets in chronological order (newest to oldest) that have Premier Draft models
+        this.availableSets = ['EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        console.log('Constructor complete, availableSets:', this.availableSets);
         
         // Don't initialize here - wait for DOM ready
     }
@@ -222,34 +222,6 @@ class DraftingAssistant {
         this.tooltipElement = document.getElementById('cardImageTooltip');
         this.currentHoverTimeout = null;
         this.currentCardName = null;
-        this.isMobileDevice = this.detectMobileDevice();
-        this.mobileHoverStates = new Map(); // Track which cards are "hovered" on mobile
-        
-        // Add global tap listener for mobile to hide card images when tapping elsewhere
-        if (this.isMobileDevice) {
-            this.initializeMobileGlobalTapListener();
-        }
-    }
-
-    initializeMobileGlobalTapListener() {
-        // Add global document listener to hide card images when tapping anywhere on mobile
-        document.addEventListener('click', (e) => {
-            // Check if the tap was on a card name element
-            const isCardNameTap = e.target.closest('.card-name-hoverable');
-            
-            // If there's a visible card image and the tap wasn't on a card name, hide the image
-            if (!isCardNameTap && this.tooltipElement && this.tooltipElement.style.display !== 'none') {
-                this.hideCardImage();
-                this.clearMobileHoverStates();
-            }
-        });
-    }
-
-    detectMobileDevice() {
-        // Detect if this is a mobile device that requires tap-to-hover
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-               ('ontouchstart' in window) || 
-               (navigator.maxTouchPoints > 0);
     }
 
     async showCardImage(cardName, x, y) {
@@ -360,13 +332,6 @@ class DraftingAssistant {
                 this.currentCardName = null;
             }
         }, 150); // Small delay to prevent flickering
-    }
-
-    clearMobileHoverStates() {
-        // Clear all mobile hover states (useful when refreshing tables)
-        if (this.mobileHoverStates) {
-            this.mobileHoverStates.clear();
-        }
     }
 
     getFilterValues() {
@@ -547,21 +512,8 @@ class DraftingAssistant {
 
     loadAvailableSets() {
         console.log('loadAvailableSets called');
-        // Order sets chronologically from newest to oldest (as provided by user)
-        const setOrder = [
-            'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 
-            'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 
-            'DMU'
-        ];
-        
-        // Filter to only include sets that have Premier Draft models available
-        const availableSets = setOrder.filter(set => {
-            return this.availableSetModels.includes(set);
-        });
-        
-        console.log('Available sets in chronological order:', availableSets);
-        console.log('this.availableSetModels:', this.availableSetModels);
-        this.populateSetDropdown(availableSets);
+        console.log('Available sets in chronological order:', this.availableSets);
+        this.populateSetDropdown(this.availableSets);
     }
 
     populateSetDropdown(sets) {
@@ -803,9 +755,6 @@ class DraftingAssistant {
         const tbody = document.querySelector('#pickOrderTable tbody');
         tbody.innerHTML = '';
 
-        // Clear mobile hover states when refreshing the table
-        this.clearMobileHoverStates();
-
         if (pickOrderData.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8">No cards found</td></tr>';
             return;
@@ -882,48 +831,24 @@ class DraftingAssistant {
         // Add event listeners for card name hover in specified container
         const cardNameElements = document.querySelectorAll(`${containerSelector} .card-name-hoverable`);
         cardNameElements.forEach(element => {
-            if (this.isMobileDevice) {
-                // Mobile device: clicking card names only shows/hides card images
+            element.addEventListener('mouseenter', (e) => {
+                const cardName = e.target.getAttribute('data-card-name');
+                const rect = e.target.getBoundingClientRect();
+                const x = rect.right + 10 + window.scrollX; // Position to the right of the card name
+                const y = rect.top + window.scrollY; // Account for scroll position
+                this.showCardImage(cardName, x, y);
+            });
+
+            element.addEventListener('mouseleave', () => {
+                this.hideCardImage();
+            });
+
+            // Add click listener for pick order table card names
+            if (containerSelector === '#pickOrderTable') {
                 element.addEventListener('click', (e) => {
-                    e.preventDefault();
                     const cardName = e.target.getAttribute('data-card-name');
-                    const elementKey = `${containerSelector}_${cardName}`;
-                    
-                    // Toggle card image display (never pick cards on mobile)
-                    if (this.mobileHoverStates.get(elementKey)) {
-                        // Hide card image
-                        this.hideCardImage();
-                        this.mobileHoverStates.delete(elementKey);
-                    } else {
-                        // Show card image
-                        const rect = e.target.getBoundingClientRect();
-                        const x = rect.right + 10 + window.scrollX;
-                        const y = rect.top + window.scrollY;
-                        this.showCardImage(cardName, x, y);
-                        this.mobileHoverStates.set(elementKey, true);
-                    }
+                    this.pickCard(cardName);
                 });
-            } else {
-                // Desktop: use mouse events
-                element.addEventListener('mouseenter', (e) => {
-                    const cardName = e.target.getAttribute('data-card-name');
-                    const rect = e.target.getBoundingClientRect();
-                    const x = rect.right + 10 + window.scrollX; // Position to the right of the card name
-                    const y = rect.top + window.scrollY; // Account for scroll position
-                    this.showCardImage(cardName, x, y);
-                });
-
-                element.addEventListener('mouseleave', () => {
-                    this.hideCardImage();
-                });
-
-                // Add click listener for pick order table card names on desktop ONLY
-                if (containerSelector === '#pickOrderTable') {
-                    element.addEventListener('click', (e) => {
-                        const cardName = e.target.getAttribute('data-card-name');
-                        this.pickCard(cardName);
-                    });
-                }
             }
         });
     }
