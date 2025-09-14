@@ -831,6 +831,9 @@ class DraftingAssistant {
         // Add event listeners for card name hover in specified container
         const cardNameElements = document.querySelectorAll(`${containerSelector} .card-name-hoverable`);
         cardNameElements.forEach(element => {
+            // Check if device is mobile
+            const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+            
             element.addEventListener('mouseenter', (e) => {
                 const cardName = e.target.getAttribute('data-card-name');
                 const rect = e.target.getBoundingClientRect();
@@ -847,7 +850,42 @@ class DraftingAssistant {
             if (containerSelector === '#pickOrderTable') {
                 element.addEventListener('click', (e) => {
                     const cardName = e.target.getAttribute('data-card-name');
-                    this.pickCard(cardName);
+                    
+                    // On mobile, only show card image tooltip, don't pick the card
+                    if (isMobile) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const rect = e.target.getBoundingClientRect();
+                        const x = rect.left + window.scrollX;
+                        const y = rect.bottom + 10 + window.scrollY;
+                        this.showCardImage(cardName, x, y);
+                        
+                        // Hide tooltip after 3 seconds on mobile
+                        setTimeout(() => {
+                            this.hideCardImage();
+                        }, 3000);
+                    } else {
+                        // On desktop, pick the card as usual
+                        this.pickCard(cardName);
+                    }
+                });
+            } else {
+                // For other containers (deck, compare tables), only show tooltip on mobile click
+                element.addEventListener('click', (e) => {
+                    if (isMobile) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const cardName = e.target.getAttribute('data-card-name');
+                        const rect = e.target.getBoundingClientRect();
+                        const x = rect.left + window.scrollX;
+                        const y = rect.bottom + 10 + window.scrollY;
+                        this.showCardImage(cardName, x, y);
+                        
+                        // Hide tooltip after 3 seconds on mobile
+                        setTimeout(() => {
+                            this.hideCardImage();
+                        }, 3000);
+                    }
                 });
             }
         });

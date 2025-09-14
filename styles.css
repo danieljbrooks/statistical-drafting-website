@@ -1354,23 +1354,19 @@ th {
 .card-name-hoverable {
     cursor: pointer;
     position: relative;
-    border-bottom: 1px dotted var(--text-muted);
     transition: all 0.2s ease;
 }
 
 .card-name-hoverable:hover {
     color: var(--accent-primary);
-    border-bottom-color: var(--accent-primary);
 }
 
 /* Enhanced styling for clickable card names in pick order table */
 #pickOrderTable .card-name-hoverable {
     font-weight: 600;
-    border-bottom: 1px dotted var(--accent-secondary);
 }
 
 #pickOrderTable .card-name-hoverable:hover {
     color: var(--accent-primary);
-    border-bottom: 2px solid var(--accent-primary);
     transform: translateY(-1px);
 }
