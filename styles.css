@@ -1000,6 +1000,35 @@ th {
         font-size: 0.95rem;
         margin-bottom: 10px;
     }
+    
+    /* Mobile poster section styling */
+    .poster-section {
+        margin-bottom: 30px;
+    }
+    
+    .poster-container {
+        gap: 15px;
+    }
+    
+    .poster-image {
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .poster-image:hover {
+        transform: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .poster-tagline {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        border-radius: 20px;
+    }
+    
+    .poster-tagline:hover::before {
+        left: -100%;
+    }
 }
 
 .filter-override-message {
@@ -1053,6 +1082,67 @@ th {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+}
+
+/* Poster section styling */
+.poster-section {
+    margin-bottom: 50px;
+    padding: 0;
+    background: none;
+    border: none;
+    text-align: center;
+}
+
+.poster-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.poster-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--border-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.poster-image:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.poster-tagline {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+    border: 2px solid var(--accent-primary);
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.2);
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+.poster-tagline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.poster-tagline:hover::before {
+    left: 100%;
 }
 
 .about-content.clean-style {
