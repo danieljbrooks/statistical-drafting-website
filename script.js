@@ -538,10 +538,24 @@ class DraftingAssistant {
         console.log('Dropdown populated with options:', setSelect.options.length);
         
         // Auto-select the first (most recent) set
-        if (sets.length > 0) {
-            setSelect.value = sets[0];
-            console.log('Auto-selected set:', sets[0]);
+        // TEMPORARILY HARDCODED TO TDM - RESTORE LATER
+        // if (sets.length > 0) {
+        //     setSelect.value = sets[0];
+        //     console.log('Auto-selected set:', sets[0]);
+        //     // Trigger the set change to load data
+        //     this.onSetChange(sets[0]);
+        // }
+        
+        // TEMPORARY: Hardcode TDM as selected set
+        if (sets.includes('TDM')) {
+            setSelect.value = 'TDM';
+            console.log('TEMPORARY: Hardcoded TDM as selected set');
             // Trigger the set change to load data
+            this.onSetChange('TDM');
+        } else if (sets.length > 0) {
+            // Fallback to first set if TDM not available
+            setSelect.value = sets[0];
+            console.log('Auto-selected set (TDM not available):', sets[0]);
             this.onSetChange(sets[0]);
         }
     }
