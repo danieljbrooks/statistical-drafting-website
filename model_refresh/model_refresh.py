@@ -177,6 +177,30 @@ class ModelRefresher:
         except requests.RequestException:
             return False
     
+    def get_draft_mode_variants(self, set_name):
+        """Get available draft mode variants for a set"""
+        variants = []
+        
+        # Check for old format (Premier/Trad)
+        premier_path = f"data/onnx/{set_name}_Premier.onnx"
+        trad_path = f"data/onnx/{set_name}_Trad.onnx"
+        
+        if self.check_file_exists_on_github(premier_path):
+            variants.append(("Premier", premier_path))
+        if self.check_file_exists_on_github(trad_path):
+            variants.append(("Trad", trad_path))
+        
+        # Check for new format (PickTwo/PickTwoTrad)
+        picktwo_path = f"data/onnx/{set_name}_PickTwo.onnx"
+        picktwotrad_path = f"data/onnx/{set_name}_PickTwoTrad.onnx"
+        
+        if self.check_file_exists_on_github(picktwo_path):
+            variants.append(("PickTwo", picktwo_path))
+        if self.check_file_exists_on_github(picktwotrad_path):
+            variants.append(("PickTwoTrad", picktwotrad_path))
+        
+        return variants
+    
     def refresh_models(self):
         """Main method to refresh models"""
         try:
@@ -198,42 +222,37 @@ class ModelRefresher:
                 self.log(f"Set '{most_recent_set}' already exists. Use --force to update anyway.")
                 return
             
-            # Prepare file paths
-            cards_csv_path = CARDS_DIR / f"{most_recent_set}.csv"
-            premier_onnx_path = ONNX_DIR / f"{most_recent_set}_Premier.onnx"
-            trad_onnx_path = ONNX_DIR / f"{most_recent_set}_Trad.onnx"
-            
-            # Check if files exist on GitHub
+            # Check for cards CSV file
             cards_url_path = f"data/cards/{most_recent_set}.csv"
-            premier_url_path = f"data/onnx/{most_recent_set}_Premier.onnx"
-            trad_url_path = f"data/onnx/{most_recent_set}_Trad.onnx"
+            cards_csv_path = CARDS_DIR / f"{most_recent_set}.csv"
             
-            missing_files = []
             if not self.check_file_exists_on_github(cards_url_path):
-                missing_files.append(f"cards/{most_recent_set}.csv")
-            if not self.check_file_exists_on_github(premier_url_path):
-                missing_files.append(f"onnx/{most_recent_set}_Premier.onnx")
-            if not self.check_file_exists_on_github(trad_url_path):
-                missing_files.append(f"onnx/{most_recent_set}_Trad.onnx")
-            
-            if missing_files:
-                self.log(f"WARNING: Missing files on GitHub: {', '.join(missing_files)}")
+                self.log(f"WARNING: Missing cards file on GitHub: {cards_url_path}")
                 if not self.force:
                     self.log("Use --force to proceed anyway")
                     return
             
-            # Download files
+            # Get available draft mode variants
+            variants = self.get_draft_mode_variants(most_recent_set)
+            
+            if not variants:
+                self.log(f"WARNING: No ONNX model files found for set '{most_recent_set}'")
+                if not self.force:
+                    self.log("Use --force to proceed anyway")
+                    return
+            
+            self.log(f"Found {len(variants)} draft mode variant(s): {[v[0] for v in variants]}")
+            
+            # Download cards file
             if self.check_file_exists_on_github(cards_url_path):
                 cards_url = f"{RAW_BASE_URL}/{cards_url_path}"
                 self.download_file(cards_url, cards_csv_path)
             
-            if self.check_file_exists_on_github(premier_url_path):
-                premier_url = f"{RAW_BASE_URL}/{premier_url_path}"
-                self.download_file(premier_url, premier_onnx_path)
-            
-            if self.check_file_exists_on_github(trad_url_path):
-                trad_url = f"{RAW_BASE_URL}/{trad_url_path}"
-                self.download_file(trad_url, trad_onnx_path)
+            # Download model files
+            for mode, github_path in variants:
+                local_path = ONNX_DIR / f"{most_recent_set}_{mode}.onnx"
+                model_url = f"{RAW_BASE_URL}/{github_path}"
+                self.download_file(model_url, local_path)
             
             # Update availableSets in script.js
             if most_recent_set not in current_sets:

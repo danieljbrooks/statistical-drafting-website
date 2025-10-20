@@ -33,7 +33,7 @@ class DraftingAssistant {
         };
         
         // Available sets in chronological order (newest to oldest) that have Premier Draft models
-        this.availableSets = ['EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        this.availableSets = ['OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSets:', this.availableSets);
         
         // Don't initialize here - wait for DOM ready
@@ -609,20 +609,43 @@ class DraftingAssistant {
 
     async loadModel(setName) {
         try {
-            const modelPath = `data/onnx/${setName}_Premier.onnx`;
-            console.log(`Loading model from: ${modelPath}`);
+            // Try to load the model, checking for both Premier and PickTwo formats
+            const possiblePaths = [
+                `data/onnx/${setName}_PickTwo.onnx`,
+                `data/onnx/${setName}_Premier.onnx`
+            ];
             
-            // Add timeout to prevent hanging
-            const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error('Model loading timeout')), 30000); // 30 second timeout
-            });
+            let modelPath = null;
+            let modelLoaded = false;
             
-            const modelPromise = ort.InferenceSession.create(modelPath);
+            for (const path of possiblePaths) {
+                try {
+                    console.log(`Trying to load model from: ${path}`);
+                    
+                    // Add timeout to prevent hanging
+                    const timeoutPromise = new Promise((_, reject) => {
+                        setTimeout(() => reject(new Error('Model loading timeout')), 30000); // 30 second timeout
+                    });
+                    
+                    const modelPromise = ort.InferenceSession.create(path);
+                    
+                    this.model = await Promise.race([modelPromise, timeoutPromise]);
+                    modelPath = path;
+                    modelLoaded = true;
+                    console.log(`Model loaded successfully for ${setName} from ${path}`);
+                    console.log('Model input names:', this.model.inputNames);
+                    console.log('Model output names:', this.model.outputNames);
+                    break;
+                } catch (error) {
+                    console.log(`Failed to load model from ${path}:`, error.message);
+                    continue;
+                }
+            }
             
-            this.model = await Promise.race([modelPromise, timeoutPromise]);
-            console.log(`Model loaded successfully for ${setName}`);
-            console.log('Model input names:', this.model.inputNames);
-            console.log('Model output names:', this.model.outputNames);
+            if (!modelLoaded) {
+                throw new Error(`No model found for ${setName} (tried PickTwo and Premier formats)`);
+            }
+            
         } catch (error) {
             console.error('Error loading model:', error);
             this.model = null;
