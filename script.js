@@ -33,7 +33,7 @@ class DraftingAssistant {
         };
         
         // Available sets in chronological order (newest to oldest) that have Premier Draft models
-        this.availableSets = ['OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        this.availableSets = ['TLA', 'CUBE', 'OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSets:', this.availableSets);
         
         // Don't initialize here - wait for DOM ready
@@ -538,24 +538,10 @@ class DraftingAssistant {
         console.log('Dropdown populated with options:', setSelect.options.length);
         
         // Auto-select the first (most recent) set
-        // TEMPORARILY HARDCODED TO TDM - RESTORE LATER
-        // if (sets.length > 0) {
-        //     setSelect.value = sets[0];
-        //     console.log('Auto-selected set:', sets[0]);
-        //     // Trigger the set change to load data
-        //     this.onSetChange(sets[0]);
-        // }
-        
-        // TEMPORARY: Hardcode TDM as selected set
-        if (sets.includes('TDM')) {
-            setSelect.value = 'TDM';
-            console.log('TEMPORARY: Hardcoded TDM as selected set');
-            // Trigger the set change to load data
-            this.onSetChange('TDM');
-        } else if (sets.length > 0) {
-            // Fallback to first set if TDM not available
+        if (sets.length > 0) {
             setSelect.value = sets[0];
-            console.log('Auto-selected set (TDM not available):', sets[0]);
+            console.log('Auto-selected set:', sets[0]);
+            // Trigger the set change to load data
             this.onSetChange(sets[0]);
         }
     }
