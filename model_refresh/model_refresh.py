@@ -58,7 +58,19 @@ class ModelRefresher:
             self.log("Fetching data tracker from GitHub...")
             response = self.session.get(DATA_TRACKER_URL)
             response.raise_for_status()
-            return response.json()
+            # Occasionally the upstream file can contain git merge-conflict markers.
+            # Strip them so we can still parse a usable tracker.
+            text = response.text
+            if any(m in text for m in ("<<<<<<<", "=======", ">>>>>>>")):
+                cleaned_lines = []
+                for line in text.splitlines():
+                    stripped = line.lstrip()
+                    if stripped.startswith(("<<<<<<<", "=======", ">>>>>>>")):
+                        continue
+                    cleaned_lines.append(line)
+                text = "\n".join(cleaned_lines).strip() + "\n"
+
+            return json.loads(text)
         except requests.RequestException as e:
             raise ModelRefreshError(f"Failed to fetch data tracker: {e}")
         except json.JSONDecodeError as e:
