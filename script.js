@@ -33,10 +33,62 @@ class DraftingAssistant {
         };
         
         // Available sets in chronological order (newest to oldest) that have Premier Draft models
-        this.availableSets = ['ECL', 'TLA', 'CUBE', 'OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        this.availableSets = ['TMT', 'ECL', 'TLA', 'CUBE', 'OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSets:', this.availableSets);
+
+        // Keep deep model diagnostics local-only unless explicitly enabled.
+        const hostname = window.location.hostname;
+        const localHostnames = ['localhost', '127.0.0.1'];
+        const urlParams = new URLSearchParams(window.location.search);
+        this.modelDebugEnabled = localHostnames.includes(hostname) || urlParams.get('debugModel') === '1';
+
+        // ORT Web WASM often throws opaque numeric Error messages (e.g. "10121728") in release builds.
+        // Verbose logging can print the real failure (unsupported op, etc.) before that happens.
+        if (this.modelDebugEnabled && typeof ort !== 'undefined' && ort.env) {
+            ort.env.logLevel = 'verbose';
+        }
         
         // Don't initialize here - wait for DOM ready
+    }
+
+    debugModelLog(...args) {
+        if (this.modelDebugEnabled) {
+            console.log('[ModelDebug]', ...args);
+        }
+    }
+
+    summarizeNumericArray(values, label) {
+        if (!values || values.length === 0) {
+            return { label, count: 0 };
+        }
+
+        let min = Infinity;
+        let max = -Infinity;
+        let finiteCount = 0;
+        let nanCount = 0;
+        let sum = 0;
+
+        values.forEach((v) => {
+            if (!Number.isFinite(v)) {
+                if (Number.isNaN(v)) nanCount++;
+                return;
+            }
+            finiteCount++;
+            sum += v;
+            if (v < min) min = v;
+            if (v > max) max = v;
+        });
+
+        const mean = finiteCount > 0 ? sum / finiteCount : null;
+        return {
+            label,
+            count: values.length,
+            finiteCount,
+            nanCount,
+            min: finiteCount > 0 ? min : null,
+            max: finiteCount > 0 ? max : null,
+            mean
+        };
     }
 
     // Method to get initial default max cards (only used once during initialization)
@@ -617,33 +669,72 @@ class DraftingAssistant {
             
             let modelPath = null;
             let modelLoaded = false;
+            /** @type {Error|null} Last failure from ort.InferenceSession.create (PickTwo or Premier). */
+            let lastOnnxError = null;
             
             for (const path of possiblePaths) {
                 try {
-                    console.log(`Trying to load model from: ${path}`);
-                    
+                    // Fetch bytes first, then create session from Uint8Array. Passing a URL string
+                    // (especially with ?cachebust= query) to InferenceSession.create can confuse the
+                    // WASM loader in some ORT Web builds; other sets may still work by luck.
+                    const fetchUrl = `${path}?cb=${Date.now()}`;
+                    console.log(`Fetching ONNX: ${fetchUrl}`);
+                    const response = await fetch(fetchUrl, { cache: 'no-store' });
+                    if (!response.ok) {
+                        console.log(`No file at ${path} (${response.status})`);
+                        continue;
+                    }
+                    const arrayBuffer = await response.arrayBuffer();
+                    const modelBytes = new Uint8Array(arrayBuffer);
+
                     // Add timeout to prevent hanging
                     const timeoutPromise = new Promise((_, reject) => {
                         setTimeout(() => reject(new Error('Model loading timeout')), 30000); // 30 second timeout
                     });
-                    
-                    const modelPromise = ort.InferenceSession.create(path);
-                    
+
+                    const modelPromise = ort.InferenceSession.create(modelBytes, {
+                        executionProviders: ['wasm']
+                    });
+
                     this.model = await Promise.race([modelPromise, timeoutPromise]);
                     modelPath = path;
                     modelLoaded = true;
-                    console.log(`Model loaded successfully for ${setName} from ${path}`);
+                    console.log(`Model loaded successfully for ${setName} from ${path} (${modelBytes.byteLength} bytes)`);
                     console.log('Model input names:', this.model.inputNames);
                     console.log('Model output names:', this.model.outputNames);
+                    this.debugModelLog('Loaded model details', {
+                        setName,
+                        modelPath,
+                        inputNames: this.model.inputNames,
+                        outputNames: this.model.outputNames,
+                        byteLength: modelBytes.byteLength
+                    });
                     break;
                 } catch (error) {
-                    console.log(`Failed to load model from ${path}:`, error.message);
+                    lastOnnxError = error instanceof Error ? error : new Error(String(error));
+                    const errText = lastOnnxError.message || String(error);
+                    console.log(`Failed to load model from ${path}:`, errText);
+                    this.debugModelLog('Model load attempt failed', {
+                        setName,
+                        path,
+                        error: errText,
+                        stack: lastOnnxError.stack
+                    });
                     continue;
                 }
             }
             
             if (!modelLoaded) {
-                throw new Error(`No model found for ${setName} (tried PickTwo and Premier formats)`);
+                const detail = lastOnnxError
+                    ? lastOnnxError.message
+                    : 'No ONNX Runtime error captured (e.g. fetch failed before ORT).';
+                // Local / ?debugModel=1: full error is critical for diagnosing TMT vs other sets.
+                if (this.modelDebugEnabled) {
+                    console.error(`[ONNX] ${setName}: all load attempts failed. Last ORT error:`, lastOnnxError || detail);
+                }
+                throw new Error(
+                    `No model loaded for ${setName} (tried PickTwo and Premier). Last error: ${detail}`
+                );
             }
             
         } catch (error) {
@@ -697,6 +788,7 @@ class DraftingAssistant {
     async getCardRatings(collection = {}) {
         if (!this.model) {
             console.log('No model loaded, returning default ratings');
+            this.debugModelLog('Fallback to default ratings: model is null', { set: this.currentSet });
             return new Array(this.cardData.length).fill(50);
         }
 
@@ -720,6 +812,12 @@ class DraftingAssistant {
                 collection: new ort.Tensor('float32', collectionVector, [1, this.cardData.length]),
                 pack: new ort.Tensor('float32', packVector, [1, this.cardData.length])
             };
+            this.debugModelLog('Inference feed shapes', {
+                set: this.currentSet,
+                collectionShape: feeds.collection.dims,
+                packShape: feeds.pack.dims,
+                cardCount: this.cardData.length
+            });
 
             // Add timeout to prevent hanging
             const timeoutPromise = new Promise((_, reject) => {
@@ -743,15 +841,28 @@ class DraftingAssistant {
                 scores = results[Object.keys(results)[0]].data;
             } else {
                 console.error('Could not find scores in model output:', results);
+                this.debugModelLog('Fallback to default ratings: output tensor missing', {
+                    set: this.currentSet,
+                    outputKeys: Object.keys(results)
+                });
                 return new Array(this.cardData.length).fill(50);
             }
 
             console.log(`Raw scores: ${scores.slice(0, 5).join(', ')}...`);
+            this.debugModelLog('Raw score stats', this.summarizeNumericArray(scores, 'rawScores'));
 
             // Normalize scores to 0-100 range using sigmoid
             const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
             const variance = scores.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / scores.length;
             const std = Math.sqrt(variance);
+            if (!Number.isFinite(std) || std === 0) {
+                this.debugModelLog('Potential degenerate score distribution', {
+                    set: this.currentSet,
+                    mean,
+                    variance,
+                    std
+                });
+            }
 
             const normalizedScores = scores.map(score => {
                 const normalized = 1 / (1 + Math.exp(-(score - mean) / std));
@@ -759,10 +870,15 @@ class DraftingAssistant {
             });
 
             console.log(`Normalized scores: ${normalizedScores.slice(0, 5).join(', ')}...`);
+            this.debugModelLog('Normalized score stats', this.summarizeNumericArray(normalizedScores, 'normalizedScores'));
 
             return normalizedScores;
         } catch (error) {
             console.error('Error getting card ratings:', error);
+            this.debugModelLog('Fallback to default ratings: inference exception', {
+                set: this.currentSet,
+                message: error.message
+            });
             return new Array(this.cardData.length).fill(50);
         }
     }

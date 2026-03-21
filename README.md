@@ -61,6 +61,9 @@ Models are automatically selected based on the set and format.
 
 ## Development
 
+### Vendored `statistical-drafting/` (Python)
+The folder `statistical-drafting/statisticaldrafting/` is a copy of the [training repo](https://github.com/danieljbrooks/statistical-drafting) package. It is only needed if you run Python tooling (e.g. ONNX export or `DraftModel`) against `data/models/*.pt`. **Keep it in sync** with the training repo whenever `DraftNet` or training code changes; otherwise `load_state_dict` will fail with missing/unexpected keys.
+
 ### Adding New Sets
 1. Add the CSV file to `data/cards/`
 2. Add the ONNX model to `data/onnx/`

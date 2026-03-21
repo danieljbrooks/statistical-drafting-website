@@ -25,7 +25,7 @@ class DraftModel:
         # Load model.
         model_path = f"../data/models/{set}_{draft_mode}.pt"
         self.network = sd.DraftNet(cardnames=self.cardnames)
-        self.network.load_state_dict(torch.load(model_path))
+        self.network.load_state_dict(torch.load(model_path, weights_only=True))
 
         # Assign p1p1 ratings.
         self.pick_table["p1p1_rating"] = self.get_card_ratings([])

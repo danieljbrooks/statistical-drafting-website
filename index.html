@@ -35,7 +35,14 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="alternate icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/ort.min.js"></script>
+    <!-- 1.16.x WASM can fail on some newer ONNX IR / PyTorch exports (e.g. TMT IR 10); keep ORT Web current. -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.24.3/dist/ort.min.js"></script>
+    <script>
+    // Load .wasm from the same package version (required when ort.min.js is on a CDN origin).
+    if (typeof ort !== 'undefined' && ort.env && ort.env.wasm) {
+        ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.24.3/dist/';
+    }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z9RVWTEH15"></script>
     <script>
@@ -307,6 +314,6 @@
     <!-- Card Image Tooltip -->
     <div id="cardImageTooltip" class="card-image-tooltip"></div>
 
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=13"></script>
 </body>
 </html>

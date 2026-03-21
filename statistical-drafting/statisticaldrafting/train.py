@@ -1,5 +1,9 @@
 import time
 import warnings
+import json
+import os
+from datetime import datetime
+from typing import Dict
 
 warnings.filterwarnings("ignore")
 
@@ -118,23 +122,71 @@ def train_model(
         epoch += 1
         scheduler.step() # Update learning rate. 
     print(f"Training complete for {weights_path}. Best performance={round(best_percent_correct, 2)}% Time={round(time.time()-t0)} seconds\n")
-    return network
+    
+    # Return training information dictionary
+    training_info = {
+        "experiment_name": experiment_name,
+        "training_picks": len(train_dataloader.dataset),
+        "validation_picks": len(val_dataloader.dataset),
+        "validation_accuracy": best_percent_correct,
+        "num_epochs": best_epoch,
+        "training_date": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    
+    return network, training_info
+
+
+def _log_training_info(training_info: dict) -> None:
+    """
+    Append training information to model_refresh/training_logs.json
+    """
+    # Determine the path to training_logs.json
+    # This function is called from notebooks/ directory, so we need to go up and into model_refresh/
+    logs_path = "../model_refresh/training_logs.json"
+    
+    try:
+        # Load existing logs or create empty list
+        if os.path.exists(logs_path):
+            with open(logs_path, 'r') as f:
+                logs = json.load(f)
+        else:
+            logs = []
+        
+        # Append new training info
+        logs.append(training_info)
+        
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(logs_path), exist_ok=True)
+        
+        # Write updated logs
+        with open(logs_path, 'w') as f:
+            json.dump(logs, f, indent=2)
+        
+        print(f"📝 Training log saved to {logs_path}")
+        
+    except Exception as e:
+        print(f"⚠️  Failed to save training log: {e}")
 
 
 def default_training_pipeline(
     set_abbreviation: str,
     draft_mode: str,
-    overwrite_dataset: str = True,
-    dropout_input: float=0.6
-) -> None:
+    overwrite_dataset: bool = True,
+    export_onnx: bool = True,
+) -> Dict:
     """
     End to end training pipeline using default values.
 
     Args:
             set_abbreviation (str): Three letter abbreviation of set to create training set of.
-            draft_mode (str): Use either "Premier" or "Trad" draft data.
+            draft_mode (str): Use either "Premier", "Trad", "PickTwo", or "PickTwoTrad" draft data.
             overwrite_dataset (bool): If False, won't overwrite an existing dataset for the set and draft mode.
+            export_onnx (bool): If True (default), export a browser-ready ONNX model alongside the .pt weights.
     """
+    import sys
+    print("🔧 Step 1: Creating dataset...")
+    sys.stdout.flush()
+
     # Create dataset.
     train_path, val_path = sd.create_dataset(
         set_abbreviation=set_abbreviation,
@@ -142,22 +194,63 @@ def default_training_pipeline(
         overwrite=overwrite_dataset,
     )
 
+    print(f"🔧 Step 2: Loading datasets from {train_path} and {val_path}...")
+    sys.stdout.flush()
+
     dataset_folder = "../data/training_sets/"
 
-    train_dataset = torch.load(train_path)
-    train_dataloader = DataLoader(train_dataset, batch_size=10000, shuffle=True)
+    train_dataset = torch.load(train_path, weights_only=False)
 
-    val_dataset = torch.load(val_path)
-    val_dataloader = DataLoader(val_dataset, batch_size=1, shuffle=False)
+    # Use smaller batch size for CI environments with limited memory
+    # Batch size reduced from 10000 to 1000 (×0.1)
+    batch_size = 1000
+    # Learning rate reduced proportionally from 0.03 to 0.003 (×0.1)
+    learning_rate = 0.003
+
+    print(f"🔧 Step 3: Creating train dataloader (batch_size={batch_size})...")
+    sys.stdout.flush()
+
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=0)
+
+    print(f"🔧 Step 4: Loading validation dataset...")
+    sys.stdout.flush()
+
+    val_dataset = torch.load(val_path, weights_only=False)
+    print(f"🔧 Step 5: Creating validation dataloader...")
+    sys.stdout.flush()
+
+    val_dataloader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=0)
+
+    print(f"🔧 Step 6: Creating DraftNet model...")
+    sys.stdout.flush()
 
     # Train network.
-    network = sd.DraftNet(cardnames=train_dataset.cardnames, dropout_input=dropout_input)
+    network = sd.DraftNet(cardnames=train_dataset.cardnames)
 
-    sd.train_model(
+    print(f"🔧 Step 7: Starting model training (lr={learning_rate})...")
+    sys.stdout.flush()
+
+    network, training_info = sd.train_model(
         train_dataloader,
         val_dataloader,
         network,
+        learning_rate=learning_rate,
         experiment_name=f"{set_abbreviation}_{draft_mode}",
     )
 
-    # TODO: export final model to ONNX. 
+    model_path = f"../data/models/{set_abbreviation}_{draft_mode}.pt"
+    onnx_path = f"../data/onnx/{set_abbreviation}_{draft_mode}.onnx"
+
+    if export_onnx:
+        os.makedirs(os.path.dirname(onnx_path), exist_ok=True)
+        print(f"Exporting model to ONNX format: {onnx_path}")
+        sd.create_onnx_model(
+            model_path=model_path,
+            cardnames=train_dataset.cardnames,
+            onnx_path=onnx_path,
+        )
+    
+    # Log training information to training_logs.json
+    _log_training_info(training_info)
+    
+    return training_info 
