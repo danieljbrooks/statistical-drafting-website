@@ -33,7 +33,7 @@ class DraftingAssistant {
         };
         
         // Available sets in chronological order (newest to oldest) that have Premier Draft models
-        this.availableSets = ['TMT', 'ECL', 'TLA', 'CUBE', 'OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
+        this.availableSets = ['SOS', 'TMT', 'ECL', 'TLA', 'CUBE', 'OM1', 'EOE', 'FIN', 'TDM', 'DFT', 'PIO', 'FDN', 'DSK', 'BLB', 'MH3', 'OTJ', 'MKM', 'KTK', 'LCI', 'WOE', 'LTR', 'MOM', 'SIR', 'SNC', 'NEO', 'ONE', 'BRO', 'DMU'];
         console.log('Constructor complete, availableSets:', this.availableSets);
 
         // Keep deep model diagnostics local-only unless explicitly enabled.
