@@ -6,11 +6,12 @@ This script automatically pulls the latest models and data from the
 statistical-drafting Python repository and updates the website.
 
 Usage:
-    python3 model_refresh.py [--dry-run] [--force]
-    
+    python3 model_refresh.py [--dry-run] [--force] [--set CODE]
+
 Options:
     --dry-run    Show what would be done without making changes
     --force      Force update even if set already exists
+    --set CODE   Refresh this set rather than the tracker's most_recent_set
 """
 
 import os
@@ -39,9 +40,10 @@ class ModelRefreshError(Exception):
     pass
 
 class ModelRefresher:
-    def __init__(self, dry_run=False, force=False):
+    def __init__(self, dry_run=False, force=False, set_override=None):
         self.dry_run = dry_run
         self.force = force
+        self.set_override = set_override
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Statistical-Drafting-Website/1.0'
@@ -216,27 +218,34 @@ class ModelRefresher:
     def refresh_models(self):
         """Main method to refresh models"""
         try:
-            # Fetch data tracker
-            data_tracker = self.fetch_data_tracker()
-            most_recent_set = data_tracker.get('most_recent_set')
-            
-            if not most_recent_set:
-                raise ModelRefreshError("No 'most_recent_set' found in data tracker")
-            
-            self.log(f"Most recent set from GitHub: {most_recent_set}")
+            if self.set_override:
+                # Not every set reaches the data tracker. Sets that 17lands publishes to
+                # S3 without listing on its public-datasets page are never seen by the
+                # upstream refresh script, so they never become most_recent_set - but
+                # their models are trained and committed like any other.
+                target_set = self.set_override
+                self.log(f"Using set given on the command line: {target_set}")
+            else:
+                data_tracker = self.fetch_data_tracker()
+                target_set = data_tracker.get('most_recent_set')
+
+                if not target_set:
+                    raise ModelRefreshError("No 'most_recent_set' found in data tracker")
+
+                self.log(f"Most recent set from GitHub: {target_set}")
             
             # Get current available sets
             current_sets = self.get_current_available_sets()
             self.log(f"Current available sets: {current_sets}")
             
             # Check if set already exists
-            if most_recent_set in current_sets and not self.force:
-                self.log(f"Set '{most_recent_set}' already exists. Use --force to update anyway.")
+            if target_set in current_sets and not self.force:
+                self.log(f"Set '{target_set}' already exists. Use --force to update anyway.")
                 return
             
             # Check for cards CSV file
-            cards_url_path = f"data/cards/{most_recent_set}.csv"
-            cards_csv_path = CARDS_DIR / f"{most_recent_set}.csv"
+            cards_url_path = f"data/cards/{target_set}.csv"
+            cards_csv_path = CARDS_DIR / f"{target_set}.csv"
             
             if not self.check_file_exists_on_github(cards_url_path):
                 self.log(f"WARNING: Missing cards file on GitHub: {cards_url_path}")
@@ -245,10 +254,10 @@ class ModelRefresher:
                     return
             
             # Get available draft mode variants
-            variants = self.get_draft_mode_variants(most_recent_set)
+            variants = self.get_draft_mode_variants(target_set)
             
             if not variants:
-                self.log(f"WARNING: No ONNX model files found for set '{most_recent_set}'")
+                self.log(f"WARNING: No ONNX model files found for set '{target_set}'")
                 if not self.force:
                     self.log("Use --force to proceed anyway")
                     return
@@ -262,15 +271,15 @@ class ModelRefresher:
             
             # Download model files
             for mode, github_path in variants:
-                local_path = ONNX_DIR / f"{most_recent_set}_{mode}.onnx"
+                local_path = ONNX_DIR / f"{target_set}_{mode}.onnx"
                 model_url = f"{RAW_BASE_URL}/{github_path}"
                 self.download_file(model_url, local_path)
             
             # Update availableSets in script.js
-            if most_recent_set not in current_sets:
-                self.update_available_sets(most_recent_set)
+            if target_set not in current_sets:
+                self.update_available_sets(target_set)
             
-            self.log(f"Model refresh completed successfully for set '{most_recent_set}'")
+            self.log(f"Model refresh completed successfully for set '{target_set}'")
             
             if not self.dry_run:
                 self.log("Don't forget to refresh your browser to see the new set!")
@@ -296,11 +305,22 @@ def main():
         action='store_true',
         help='Force update even if set already exists'
     )
+    parser.add_argument(
+        '--set',
+        dest='set_code',
+        default=None,
+        metavar='CODE',
+        help="Refresh this set instead of the data tracker's most_recent_set. Needed for "
+             "sets 17lands publishes to S3 without listing on its datasets page, which "
+             "never become most_recent_set upstream (e.g. --set HOB)."
+    )
     
     args = parser.parse_args()
     
     try:
-        refresher = ModelRefresher(dry_run=args.dry_run, force=args.force)
+        refresher = ModelRefresher(
+            dry_run=args.dry_run, force=args.force, set_override=args.set_code
+        )
         refresher.refresh_models()
         
     except ModelRefreshError as e:
